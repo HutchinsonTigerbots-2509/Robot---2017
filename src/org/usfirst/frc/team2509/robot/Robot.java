@@ -11,7 +11,7 @@ import com.ctre.CANTalon;
 
 public class Robot extends IterativeRobot {
 	Joystick stick;
-	CANTalon m1, m2, m3, m4;
+	CANTalon m1, m2, m3, m4,m5;
 	RobotDrive drive;
 	UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 	public void robotInit() {
@@ -22,6 +22,7 @@ public class Robot extends IterativeRobot {
 		m3= new CANTalon(2);
 		m4= new CANTalon(3);
 		m4.setInverted(true);
+		m5 = new CANTalon(4);
 		drive= new RobotDrive(m1,m3,m2,m4);
 		camera.setResolution(720, 405);
 	}
@@ -40,6 +41,11 @@ public class Robot extends IterativeRobot {
 		drive.setSafetyEnabled(true);
 		while(isEnabled()&& isOperatorControl()){
 			drive.mecanumDrive_Cartesian(getScaledX(), getScaledY(), getScaledZ(), 0);
+			if(stick.getRawButton(1)){
+				m5.set(0.25);
+			}else{
+				m5.set(0);
+			}
 		}
 	}
 
