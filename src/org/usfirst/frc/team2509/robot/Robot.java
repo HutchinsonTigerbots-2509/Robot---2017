@@ -1,11 +1,16 @@
 package org.usfirst.frc.team2509.robot;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
+
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
 import com.ctre.CANTalon;
 
@@ -14,6 +19,7 @@ public class Robot extends IterativeRobot {
 	CANTalon m1, m2, m3, m4,m5;
 	RobotDrive drive;
 	UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+	Mat	source = new Mat(),	output = new Mat();
 	public void robotInit() {
 		stick= new Joystick(0);
 		m1= new CANTalon(0);
@@ -23,6 +29,7 @@ public class Robot extends IterativeRobot {
 		m4= new CANTalon(3);
 		m4.setInverted(true);
 		m5 = new CANTalon(4);
+		
 		drive= new RobotDrive(m1,m3,m2,m4);
 		camera.setResolution(720, 405);
 	}
@@ -38,12 +45,17 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopPeriodic(){
+		
 		drive.setSafetyEnabled(true);
 		while(isEnabled()&& isOperatorControl()){
+			procImg();
 			drive.mecanumDrive_Cartesian(getScaledX(), getScaledY(), getScaledZ(), 0);
 			if(stick.getRawButton(1)){
 				m5.set(0.25);
 			}else{
+				m5.set(0);
+			}
+			if(stick.getRawButton(2)){
 				m5.set(0);
 			}
 		}
@@ -59,6 +71,16 @@ public class Robot extends IterativeRobot {
 		return (stick.getY()*((stick.getRawAxis(3)+1.5)*0.4));
 	}
 	public double getScaledZ(){
-		return (stick.getZ()*((stick.getRawAxis(3)+1.5)*0.4));
+		return (-stick.getZ()*((stick.getRawAxis(3)+1)*0.5));
+	}
+	public void procImg(){
+			camera.setResolution(640, 480);
+            CvSink cvSink = CameraServer.getInstance().getVideo();
+            CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 640, 480);            
+            while(!Thread.interrupted()) {
+                cvSink.grabFrame(source);
+                Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+                outputStream.putFrame(output);
+            }
 	}
 }
