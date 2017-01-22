@@ -7,23 +7,29 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Vision{
-	public final UsbCamera 
+	public UsbCamera frontCam;
+	private Mat source, output;
+	private CvSink cvSink;
+	private CvSource outputStream;
+	private boolean initialized = false;
+	public void init(){
 		frontCam = CameraServer.getInstance().startAutomaticCapture(0);
-	private final Mat
-		source = new Mat(),
+		frontCam.setResolution(640,480);
+		source = new Mat();
 		output = new Mat();
-	public void procImg(){
-		new Thread(()->{
-			frontCam.setResolution(640, 480);
-            CvSink cvSink = CameraServer.getInstance().getVideo();
-            CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 640, 480);            
-            while(!Thread.interrupted()) {
-                cvSink.grabFrame(source);
-                Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
-                outputStream.putFrame(output);
-            }
-		}).start();
+		cvSink = CameraServer.getInstance().getVideo(); 
+		outputStream = CameraServer.getInstance().putVideo("Blur", 640, 480);
+		initialized = true;
+	}
+	public void cvt2Gray(){             
+        if(initialized){
+        	cvSink.grabFrame(source);
+            Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+            outputStream.putFrame(output);
+        }
+        SmartDashboard.putBoolean("Camera Status:", initialized);
 	}
 }

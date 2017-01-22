@@ -1,5 +1,9 @@
 package org.usfirst.frc.team2509.robot;
 
+import com.ctre.CANTalon;
+
+import org.opencv.imgproc.Imgproc;
+
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
@@ -9,18 +13,16 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
 
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
-
-import com.ctre.CANTalon;
-
 public class Robot extends IterativeRobot {
+	Vision Vision;
+	UsbCamera cam;
 	Joystick stick;
 	CANTalon m1, m2, m3, m4,m5;
 	RobotDrive drive;
-	UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-	Mat	source = new Mat(),	output = new Mat();
+	
 	public void robotInit() {
+		Vision.init();
+		cam = Vision.frontCam;
 		stick= new Joystick(0);
 		m1= new CANTalon(0);
 		m2= new CANTalon(1);
@@ -29,9 +31,7 @@ public class Robot extends IterativeRobot {
 		m4= new CANTalon(3);
 		m4.setInverted(true);
 		m5 = new CANTalon(4);
-		
 		drive= new RobotDrive(m1,m3,m2,m4);
-		camera.setResolution(720, 405);
 	}
 
 	public void autonomousInit() {
