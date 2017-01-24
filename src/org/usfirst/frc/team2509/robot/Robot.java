@@ -21,6 +21,7 @@ public class Robot extends IterativeRobot {
 	RobotDrive drive;
 	
 	public void robotInit() {
+		Vision = new Vision();
 		cam = Vision.FRONT_CAM;
 		stick= new Joystick(0);
 		m1= new CANTalon(0);
@@ -31,6 +32,8 @@ public class Robot extends IterativeRobot {
 		m4.setInverted(true);
 		m5 = new CANTalon(4);
 		drive= new RobotDrive(m1,m3,m2,m4);
+		
+		
 	}
 
 	public void autonomousInit() {
@@ -47,7 +50,6 @@ public class Robot extends IterativeRobot {
 		
 		drive.setSafetyEnabled(true);
 		while(isEnabled()&& isOperatorControl()){
-			procImg();
 			drive.mecanumDrive_Cartesian(getScaledX(), getScaledY(), getScaledZ(), 0);
 			if(stick.getRawButton(1)){
 				m5.set(0.25);
@@ -57,6 +59,8 @@ public class Robot extends IterativeRobot {
 			if(stick.getRawButton(2)){
 				m5.set(0);
 			}
+				Vision.Procces();
+			
 		}
 	}
 
@@ -72,14 +76,5 @@ public class Robot extends IterativeRobot {
 	public double getScaledZ(){
 		return (-stick.getZ()*((stick.getRawAxis(3)+1)*0.5));
 	}
-	public void procImg(){
-			camera.setResolution(640, 480);
-            CvSink cvSink = CameraServer.getInstance().getVideo();
-            CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 640, 480);            
-            while(!Thread.interrupted()) {
-                cvSink.grabFrame(source);
-                Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
-                outputStream.putFrame(output);
-            }
-	}
+	
 }

@@ -2,6 +2,7 @@ package org.usfirst.frc.team2509.robot;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -33,8 +34,8 @@ public class Vision{
 	 * BEGIN VARIABLES
 	 */
 	
-	private boolean 
-		isINIT = false;
+	private final boolean 
+		isINIT = true;
 	protected final double
 		CAMERA_ANGLE = 15,
 		CAMERA_OFFSET_FRONT = 0,
@@ -47,13 +48,13 @@ public class Vision{
 		BOILER_WIDTH = 15,
 		FRAME_RATE = 0,
 		GEAR_PEG_HEIGHT =16;
-	public final UsbCamera 
+	public UsbCamera 
 	//IP FOR STREAM http://roborio-2509-frc.local:1181/?action=stream
-		FRONT_CAM = CameraServer.getInstance().startAutomaticCapture(0);
-	private final CvSink
-		CVSINK = CameraServer.getInstance().getVideo();
+		FRONT_CAM = CameraServer.getInstance().startAutomaticCapture();
+	private CvSink
+		CVSINK;// = CameraServer.getInstance().getVideo();
 	private final CvSource 
-		OUTPUT_STREAM = CameraServer.getInstance().putVideo("Procces", 640, 480);
+		OUTPUT_STREAM = CameraServer.getInstance().putVideo("ALT-Cam", 640, 480);
 	private final Mat 
 		CLUSTERS = new Mat(),		
 		HEIRARCHY = new Mat(),
@@ -109,7 +110,7 @@ public class Vision{
 				if(aspect < 1.0)
 					iterator.remove();
 			}
-			if(contours.size() == 1){
+			if(contours.size()==1){
 				Rect rec = Imgproc.boundingRect(contours.get(0));
 				Y = rec.br().y + rec.height / 2.0;
 				Y= -((2 * (Y / SOURCE.height())) - 1);
@@ -130,6 +131,23 @@ public class Vision{
 		// Mod the angle by 360 to give a value between (0, 360]
 		// Make it positive (by adding 360) if required
 		return (angle < 0) ? angle % 360 + 360 : angle % 360;
+	}
+	public void Procces(){
+			CVSINK = CameraServer.getInstance().getVideo();
+			
+		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();;
+		CVSINK.grabFrame(SOURCE);
+        Imgproc.cvtColor(SOURCE, OUTPUT, Imgproc.COLOR_BGR2HSV);
+        Imgproc.cvtColor(SOURCE, HSL, Imgproc.COLOR_BGR2HLS);
+		Core.inRange(HSL, LOWER_BOUNDS, UPPER_BOUNDS, THRESH);
+		
+		Imgproc.findContours(THRESH, contours, HEIRARCHY, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+		for(MatOfPoint mop :contours){
+			Rect rec = Imgproc.boundingRect(mop);
+			Imgproc.rectangle(SOURCE, rec.br(), rec.tl(), RED);
+		}
+        OUTPUT_STREAM.putFrame(OUTPUT);
+        
 	}
 
 }
