@@ -59,7 +59,7 @@ public class Robot extends IterativeRobot {
 			if(stick.getRawButton(2)){
 				m5.set(0);
 			}
-				Vision.Procces();
+			Vision.ID_Target();
 			
 		}
 	}

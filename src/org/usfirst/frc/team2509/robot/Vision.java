@@ -48,11 +48,11 @@ public class Vision{
 		BOILER_WIDTH = 15,
 		FRAME_RATE = 0,
 		GEAR_PEG_HEIGHT =16;
-	public UsbCamera 
+	public final UsbCamera 
 	//IP FOR STREAM http://roborio-2509-frc.local:1181/?action=stream
 		FRONT_CAM = CameraServer.getInstance().startAutomaticCapture();
-	private CvSink
-		CVSINK;// = CameraServer.getInstance().getVideo();
+	private final CvSink
+		CVSINK = CameraServer.getInstance().getVideo();
 	private final CvSource 
 		OUTPUT_STREAM = CameraServer.getInstance().putVideo("ALT-Cam", 640, 480);
 	private final Mat 
@@ -92,9 +92,11 @@ public class Vision{
 		while(FRAME_RATE <5){
 			contours.clear();
 			CVSINK.grabFrame(SOURCE);
-			Imgproc.cvtColor(SOURCE, HSL, Imgproc.COLOR_BGR2HLS);
+			Imgproc.cvtColor(SOURCE, HSL, Imgproc.COLOR_BGR2HSV);
+			
 			Core.inRange(HSL, LOWER_BOUNDS, UPPER_BOUNDS, THRESH);
-			Imgproc.findContours(THRESH, contours, HEIRARCHY, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+			Imgproc.findContours(THRESH, contours,HEIRARCHY, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+			
 			for(MatOfPoint mop :contours){
 				Rect rec = Imgproc.boundingRect(mop);
 				Imgproc.rectangle(SOURCE, rec.br(), rec.tl(), RED);
@@ -133,7 +135,7 @@ public class Vision{
 		return (angle < 0) ? angle % 360 + 360 : angle % 360;
 	}
 	public void Procces(){
-			CVSINK = CameraServer.getInstance().getVideo();
+			
 			
 		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();;
 		CVSINK.grabFrame(SOURCE);
