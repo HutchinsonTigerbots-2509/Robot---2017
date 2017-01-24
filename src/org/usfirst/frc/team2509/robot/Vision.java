@@ -16,7 +16,6 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * 
@@ -49,15 +48,16 @@ public class Vision{
 		FRAME_RATE = 0,
 		GEAR_PEG_HEIGHT =16;
 	public final UsbCamera 
-		FRONT_CAM = CameraServer.getInstance().startAutomaticCapture(0);;
+	//IP FOR STREAM http://roborio-2509-frc.local:1181/?action=stream
+		FRONT_CAM = CameraServer.getInstance().startAutomaticCapture(0);
 	private final CvSink
 		CVSINK = CameraServer.getInstance().getVideo();
 	private final CvSource 
-		OUTPUT_STREAM = CameraServer.getInstance().putVideo("Blur", 640, 480);
+		OUTPUT_STREAM = CameraServer.getInstance().putVideo("Procces", 640, 480);
 	private final Mat 
 		CLUSTERS = new Mat(),		
 		HEIRARCHY = new Mat(),
-		HSV = new Mat(),
+		HSL = new Mat(),
 		OUTPUT = new Mat(),
 		SOURCE = new Mat(),
 		THRESH = new Mat();
@@ -69,8 +69,8 @@ public class Vision{
 		RED = new Scalar(0, 0, 255),
 		YELLOW = new Scalar(0, 255, 255),
 	//Thresholds values
-		LOWER_BOUNDS = new Scalar(0,0,0),
-		UPPER_BOUNDS = new Scalar(0,0,0);
+		LOWER_BOUNDS = new Scalar(70,170,44),
+		UPPER_BOUNDS = new Scalar(100,255,255);
 	protected final Size 
 		RESIZE = new Size(320,240);
 	
@@ -79,17 +79,10 @@ public class Vision{
 	 * BEGIN METHODS
 	 */
 	
-	public void init(){
-		FRONT_CAM.setResolution(640,480);
-		isINIT = true;
-	}
-	public void cvt2Gray(){             
-        if(isINIT){
+	public void cvt2Gray(){
         	CVSINK.grabFrame(SOURCE);
             Imgproc.cvtColor(SOURCE, OUTPUT, Imgproc.COLOR_BGR2GRAY);
             OUTPUT_STREAM.putFrame(OUTPUT);
-        }
-        SmartDashboard.putBoolean("Camera Status:", isINIT);
 	}
 	public void ID_Target(){
 		ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
@@ -98,8 +91,8 @@ public class Vision{
 		while(FRAME_RATE <5){
 			contours.clear();
 			CVSINK.grabFrame(SOURCE);
-			Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2HSV);
-			Core.inRange(HSV, LOWER_BOUNDS, UPPER_BOUNDS, THRESH);
+			Imgproc.cvtColor(SOURCE, HSL, Imgproc.COLOR_BGR2HLS);
+			Core.inRange(HSL, LOWER_BOUNDS, UPPER_BOUNDS, THRESH);
 			Imgproc.findContours(THRESH, contours, HEIRARCHY, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 			for(MatOfPoint mop :contours){
 				Rect rec = Imgproc.boundingRect(mop);

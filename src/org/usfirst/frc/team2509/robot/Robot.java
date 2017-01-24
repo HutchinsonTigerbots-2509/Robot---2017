@@ -21,7 +21,6 @@ public class Robot extends IterativeRobot {
 	RobotDrive drive;
 	
 	public void robotInit() {
-		Vision.init();
 		cam = Vision.FRONT_CAM;
 		stick= new Joystick(0);
 		m1= new CANTalon(0);
