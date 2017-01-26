@@ -1,11 +1,6 @@
 package org.usfirst.frc.team2509.robot;
 
-import org.opencv.imgproc.Imgproc;
-
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -15,6 +10,7 @@ import com.ctre.CANTalon;
 
 public class Robot extends IterativeRobot {
 	Vision Vision;
+	Vision2 Vision2;
 	UsbCamera cam;
 	Joystick stick;
 	CANTalon m1, m2, m3, m4,m5;
@@ -22,6 +18,7 @@ public class Robot extends IterativeRobot {
 	
 	public void robotInit() {
 		Vision = new Vision();
+		Vision2 = new Vision2();
 		cam = Vision.FRONT_CAM;
 		stick= new Joystick(0);
 		m1= new CANTalon(0);
