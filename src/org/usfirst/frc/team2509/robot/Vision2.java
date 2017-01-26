@@ -3,8 +3,12 @@ package org.usfirst.frc.team2509.robot;
 import java.util.ArrayList;
 
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
@@ -29,9 +33,8 @@ public class Vision2{
 	/**
 	 * BEGIN VARIABLES
 	 */
-	
-	private final boolean 
-		isINIT = true;
+
+
 	protected final double
 		CAMERA_ANGLE = 15,
 		CAMERA_OFFSET_FRONT = 0,
@@ -94,6 +97,23 @@ public class Vision2{
 		contours.clear();
 		Imgproc.findContours(THRESH, contours, HEIRARCHY, 
 				Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+		MatOfInt hull = new MatOfInt();
+		double area = Imgproc.contourArea(HEIRARCHY)
+		for(int i = 0; i<contours.size(); i++){
+			final MatOfPoint CONTOURS = contours.get(i);
+			final Rect rec = Imgproc.boundingRect(CONTOURS);
+			Imgproc.convexHull(CONTOURS, hull);
+			MatOfPoint mopHull = new MatOfPoint();
+			mopHull.create((int) hull.size().height,1, CvType.CV_32SC2);
+			for (int j = 0; j < hull.size().height; j++){
+				int index = (int)hull.get(j, 0)[0];
+				double[] point = new double[] {CONTOURS.get(index,0)[0], CONTOURS.get(index,0)[1]};
+				mopHull.put(j, 0, point);
+			}
+			double solid = 100 * area / Imgproc.contourArea(mopHull);
+			double ratio = rec.width/rec.height;
+			contours.add(CONTOURS);
+		}
 		
 	}
 	
