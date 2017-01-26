@@ -1,18 +1,8 @@
 package org.usfirst.frc.team2509.robot;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfInt;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
@@ -82,84 +72,5 @@ public class Vision2{
 	/**
 	 * BEGIN METHODS
 	 */
-	public void Canny(){
-		CVSINK.grabFrame(SOURCE);
-		Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2HSV);
-		Imgproc.blur(HSV, EDGES, new Size(3,3));
-		Imgproc.Canny(EDGES, EDGES, LOWER_THRESH,UPPER_THRESH,3,false);
-		
-	}
 	
-	public void GripBased(){
-		CVSINK.grabFrame(SOURCE);
-		Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2HSV);
-		Core.inRange(HSV, LOWER_BOUNDS, UPPER_BOUNDS, THRESH);
-		ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-		contours.clear();
-		Imgproc.findContours(THRESH, contours, HEIRARCHY, 
-				Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-		MatOfInt hull = new MatOfInt();
-		for(int i = 0; i<contours.size(); i++){
-			final MatOfPoint CONTOURS = contours.get(i);
-			final Rect rec = Imgproc.boundingRect(CONTOURS);
-			Imgproc.convexHull(CONTOURS, hull);
-			MatOfPoint mopHull = new MatOfPoint();
-			mopHull.create((int) hull.size().height,1, CvType.CV_32SC2);
-			for (int j = 0; j < hull.size().height; j++){
-				int index = (int)hull.get(j, 0)[0];
-				double[] point = new double[] {CONTOURS.get(index,0)[0], CONTOURS.get(index,0)[1]};
-				mopHull.put(j, 0, point);
-			}
-			contours.add(CONTOURS);
-		}
-		
-	}
-	
-	public void ID_Target(){
-		ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-		MatOfInt hull = new MatOfInt();
-		while(FRAME_RATE <5){
-			contours.clear();
-			CVSINK.grabFrame(SOURCE);
-			Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2HSV);
-			Core.inRange(HSV, LOWER_BOUNDS, UPPER_BOUNDS, THRESH);
-			Imgproc.findContours(THRESH, contours,HEIRARCHY, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-			for(int i = 0; i<contours.size(); i++){
-				MatOfPoint CONTOURS = contours.get(i);
-				Rect rec = Imgproc.boundingRect(CONTOURS);
-				Imgproc.convexHull(CONTOURS, hull);
-				MatOfPoint mopHull = new MatOfPoint();
-				mopHull.create((int) hull.size().height,1, CvType.CV_32SC2);
-				for (int j = 0; j < hull.size().height; j++){
-					int index = (int)hull.get(j, 0)[0];
-					double[] point = new double[] {CONTOURS.get(index,0)[0], CONTOURS.get(index,0)[1]};
-					mopHull.put(j, 0, point);
-				}
-				contours.add(CONTOURS);
-			}
-			for(MatOfPoint mop :contours){
-				Rect rec = Imgproc.boundingRect(mop);
-				Imgproc.rectangle(SOURCE, rec.br(), rec.tl(), RED);
-			}
-			for(Iterator<MatOfPoint> iterator = contours.iterator();iterator.hasNext();){
-				MatOfPoint matOfPoint = (MatOfPoint) iterator.next();
-				Rect rec = Imgproc.boundingRect(matOfPoint);
-				if(rec.height < 15 || rec.width < 15){
-					iterator.remove();
-				continue;
-				}
-				float aspect = (float)rec.width/(float)rec.height;
-				if(aspect < 1.0)
-					iterator.remove();
-			}
-			if(contours.size()==1){
-				Rect rec = Imgproc.boundingRect(contours.get(0));
-				Point center = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0);
-				Point centerw = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0 - 20);
-				Imgproc.putText(SOURCE, ""+(double)center.x+" , "+(double)center.y, center, Core.FONT_HERSHEY_PLAIN, 1, BLACK);
-				Imgproc.putText(SOURCE, ""+(double)centerw.x+" , "+(double)centerw.y, centerw, Core.FONT_HERSHEY_PLAIN, 3, BLACK);
-			}
-			OUTPUT_STREAM.putFrame(SOURCE);
-		}
-	}
 }

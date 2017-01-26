@@ -1,16 +1,17 @@
 package org.usfirst.frc.team2509.robot;
 
+import com.ctre.CANTalon;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
 
-import com.ctre.CANTalon;
-
 public class Robot extends IterativeRobot {
 	Vision Vision;
-	Vision2 Vision2;
+	GripPipeline pipe;
+	//Vision2 Vision2;
 	UsbCamera cam;
 	Joystick stick;
 	CANTalon m1, m2, m3, m4,m5;
@@ -18,7 +19,8 @@ public class Robot extends IterativeRobot {
 	
 	public void robotInit() {
 		Vision = new Vision();
-		Vision2 = new Vision2();
+		pipe = new GripPipeline();
+		//Vision2 = new Vision2();
 		cam = Vision.FRONT_CAM;
 		stick= new Joystick(0);
 		m1= new CANTalon(0);
@@ -29,7 +31,6 @@ public class Robot extends IterativeRobot {
 		m4.setInverted(true);
 		m5 = new CANTalon(4);
 		drive= new RobotDrive(m1,m3,m2,m4);
-		
 		
 	}
 
@@ -44,7 +45,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopPeriodic(){
-		
+		//Vision.Procces();
 		drive.setSafetyEnabled(true);
 		while(isEnabled()&& isOperatorControl()){
 			drive.mecanumDrive_Cartesian(getScaledX(), getScaledY(), getScaledZ(), 0);
@@ -55,8 +56,9 @@ public class Robot extends IterativeRobot {
 			}
 			if(stick.getRawButton(2)){
 				m5.set(0);
+			}if(stick.getRawButton(11)){
+				Vision.cvt2Gray();
 			}
-			Vision.ID_Target();
 			
 		}
 	}
