@@ -70,8 +70,8 @@ public class Vision{
 		RED = new Scalar(0, 0, 255),
 		YELLOW = new Scalar(0, 255, 255),
 	//Thresholds values
-		LOWER_BOUNDS = new Scalar(70,170,44),
-		UPPER_BOUNDS = new Scalar(100,255,255);
+		LOWER_BOUNDS = new Scalar(37,0,188),
+		UPPER_BOUNDS = new Scalar(104,46,255);
 	protected final Size 
 		RESIZE = new Size(320,240);
 	
