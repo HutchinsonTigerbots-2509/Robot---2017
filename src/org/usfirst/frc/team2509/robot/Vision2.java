@@ -72,5 +72,13 @@ public class Vision2{
 	/**
 	 * BEGIN METHODS
 	 */
-	
+	public void ID(){
+		while(FRAME_RATE<5){
+			CVSINK.grabFrame(SOURCE);        
+        	FRONT_CAM.setBrightness(30);
+        	FRONT_CAM.setExposureManual(-10);
+        	
+        	OUTPUT_STREAM.putFrame(OUTPUT);
+		}
+	}
 }

@@ -57,7 +57,7 @@ public class Vision{
 	public final Mat 
 		CLUSTERS = new Mat(),		
 		HEIRARCHY = new Mat(),
-		HSL = new Mat(),
+		HSV = new Mat(),
 		OUTPUT = new Mat(),
 		SOURCE = new Mat(),
 		THRESH = new Mat();
@@ -81,7 +81,7 @@ public class Vision{
 	
 	public void cvt2Gray(){
         	CVSINK.grabFrame(SOURCE);        
-        	FRONT_CAM.setBrightness(25);
+        	FRONT_CAM.setBrightness(30);
             Imgproc.cvtColor(SOURCE, OUTPUT, Imgproc.COLOR_BGR2RGB);
             OUTPUT_STREAM.putFrame(OUTPUT);
 	}
@@ -91,10 +91,11 @@ public class Vision{
 		long BEFORE = System.currentTimeMillis();
 		while(FRAME_RATE <5){
 			contours.clear();
+			FRONT_CAM.setBrightness(30);
 			CVSINK.grabFrame(SOURCE);
-			Imgproc.cvtColor(SOURCE, HSL, Imgproc.COLOR_BGR2HSV);
+			Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2HSV);
 			
-			Core.inRange(HSL, LOWER_BOUNDS, UPPER_BOUNDS, THRESH);
+			Core.inRange(HSV, LOWER_BOUNDS, UPPER_BOUNDS, THRESH);
 			Imgproc.findContours(THRESH, contours,HEIRARCHY, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 			
 			for(MatOfPoint mop :contours){
@@ -139,8 +140,8 @@ public class Vision{
 		while(FRAME_RATE <5){
 			contours.clear();
 			CVSINK.grabFrame(SOURCE);
-			Imgproc.cvtColor(SOURCE, HSL, Imgproc.COLOR_BGR2HSV);
-			Core.inRange(HSL, LOWER_BOUNDS, UPPER_BOUNDS, THRESH);
+			Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2HSV);
+			Core.inRange(HSV, LOWER_BOUNDS, UPPER_BOUNDS, THRESH);
 			Imgproc.findContours(THRESH, contours,HEIRARCHY, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 			for(MatOfPoint mop :contours){
 				Rect rec = Imgproc.boundingRect(mop);
