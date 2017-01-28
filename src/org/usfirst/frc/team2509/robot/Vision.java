@@ -163,8 +163,8 @@ public class Vision{
 	public void Procces(){
 		FRONT_CAM.setBrightness(30);
 		CVSINK.grabFrame(SOURCE);
-		Imgproc.cvtColor(SOURCE, OUTPUT, Imgproc.COLOR_BGR2RGB);
-		//Core.inRange(HSV, LOWER_BOUNDS, UPPER_BOUNDS, OUTPUT);
+		Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2RGB);
+		Imgproc.threshold(HSV, OUTPUT, 180, 200, Imgproc.THRESH_BINARY);
 		OUTPUT_STREAM.putFrame(OUTPUT);
 		
 		
