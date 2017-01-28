@@ -32,7 +32,8 @@ public class Vision{
 	/**
 	 * BEGIN VARIABLES
 	 */
-	
+	private final ArrayList<MatOfPoint> 
+		contours = new ArrayList<MatOfPoint>();
 	private final boolean 
 		isINIT = true;
 	protected final double
@@ -50,6 +51,7 @@ public class Vision{
 	public final UsbCamera 
 	//IP FOR STREAM http://roborio-2509-frc.local:1181/?action=stream
 		FRONT_CAM = CameraServer.getInstance().startAutomaticCapture();
+
 	private final CvSink
 		CVSINK = CameraServer.getInstance().getVideo();
 	private final CvSource 
@@ -69,8 +71,8 @@ public class Vision{
 		RED = new Scalar(0, 0, 255),
 		YELLOW = new Scalar(0, 255, 255),
 		//Thresholds values
-		LOWER_BOUNDS = new Scalar(37,0,188),
-		UPPER_BOUNDS = new Scalar(104,46,255);
+		LOWER_BOUNDS = new Scalar(175,175,50),
+		UPPER_BOUNDS = new Scalar(200,200,75);
 	protected final Size 
 		RESIZE = new Size(320,240);
 	
@@ -79,14 +81,38 @@ public class Vision{
 	 * BEGIN METHODS
 	 */
 	
-	public void cvt2Gray(){
-        	CVSINK.grabFrame(SOURCE);        
-        	FRONT_CAM.setBrightness(30);
-            Imgproc.cvtColor(SOURCE, OUTPUT, Imgproc.COLOR_BGR2RGB);
-            OUTPUT_STREAM.putFrame(OUTPUT);
+	public void cvt2Gray(){        
+		contours.clear();
+    	FRONT_CAM.setBrightness(30);
+       	CVSINK.grabFrame(SOURCE);
+       	Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2HSV);
+        Core.inRange(HSV, LOWER_BOUNDS, UPPER_BOUNDS, THRESH);
+        Imgproc.findContours(THRESH, contours,HEIRARCHY, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        for(MatOfPoint mop: contours){
+        	Rect rec = Imgproc.boundingRect(mop);
+        	Imgproc.rectangle(SOURCE, rec.br(),rec.tl()	, RED);
+        }
+        for(Iterator<MatOfPoint> iterator = contours.iterator();iterator.hasNext();){
+        	MatOfPoint matOfPoint = (MatOfPoint) iterator.next();
+        	Rect rec = Imgproc.boundingRect(matOfPoint);
+        /*	if(rec.height>15||rec.width>15){
+        		iterator.remove();
+        		continue;
+        	}*/
+        	float ratio = (float)rec.width/(float)rec.height;
+        	if(ratio>0.45){
+        		iterator.remove();
+        	}
+        	if(ratio<0.35){
+        		iterator.remove();
+        	}
+        	if(contours.size()==2){
+        		Imgproc.putText(SOURCE, ""+(int)rec.x, rec.br(), Core.FONT_HERSHEY_COMPLEX, 1, BLUE);
+        	}
+        }
+        OUTPUT_STREAM.putFrame(SOURCE);
 	}
 	public void ID_Target(){
-		ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 		double X,Y,TARGET_X,TARGET_Y,DISTANCE,AZIMUTH;
 		long BEFORE = System.currentTimeMillis();
 		while(FRAME_RATE <5){
@@ -94,7 +120,6 @@ public class Vision{
 			FRONT_CAM.setBrightness(30);
 			CVSINK.grabFrame(SOURCE);
 			Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2HSV);
-			
 			Core.inRange(HSV, LOWER_BOUNDS, UPPER_BOUNDS, THRESH);
 			Imgproc.findContours(THRESH, contours,HEIRARCHY, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 			
@@ -105,7 +130,7 @@ public class Vision{
 			for(Iterator<MatOfPoint> iterator = contours.iterator();iterator.hasNext();){
 				MatOfPoint matOfPoint = (MatOfPoint) iterator.next();
 				Rect rec = Imgproc.boundingRect(matOfPoint);
-				if(rec.height < 15 || rec.width < 15){
+				if( rec.height < 15 || rec.width < 15){
 					iterator.remove();
 				continue;
 				}
@@ -113,7 +138,7 @@ public class Vision{
 				if(aspect < 1.0)
 					iterator.remove();
 			}
-			if(contours.size()==1){
+			if(contours.size()==2){
 				Rect rec = Imgproc.boundingRect(contours.get(0));
 				Y = rec.br().y + rec.height / 2.0;
 				Y= -((2 * (Y / SOURCE.height())) - 1);
@@ -136,30 +161,12 @@ public class Vision{
 		return (angle < 0) ? angle % 360 + 360 : angle % 360;
 	}
 	public void Procces(){
-		ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-		while(FRAME_RATE <5){
-			contours.clear();
-			CVSINK.grabFrame(SOURCE);
-			Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2HSV);
-			Core.inRange(HSV, LOWER_BOUNDS, UPPER_BOUNDS, THRESH);
-			Imgproc.findContours(THRESH, contours,HEIRARCHY, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
-			for(MatOfPoint mop :contours){
-				Rect rec = Imgproc.boundingRect(mop);
-				Imgproc.rectangle(SOURCE, rec.br(), rec.tl(), RED);
-			}
-			for(Iterator<MatOfPoint> iterator = contours.iterator();iterator.hasNext();){
-				MatOfPoint matOfPoint = (MatOfPoint) iterator.next();
-				Rect rec = Imgproc.boundingRect(matOfPoint);
-				if(rec.height < 15 || rec.width < 15){
-					iterator.remove();
-				continue;
-				}
-				float aspect = (float)rec.width/(float)rec.height;
-				if(aspect < 1.0)
-					iterator.remove();
-			}
-			OUTPUT_STREAM.putFrame(HEIRARCHY);
-		}
+		FRONT_CAM.setBrightness(30);
+		CVSINK.grabFrame(SOURCE);
+		Imgproc.cvtColor(SOURCE, OUTPUT, Imgproc.COLOR_BGR2RGB);
+		//Core.inRange(HSV, LOWER_BOUNDS, UPPER_BOUNDS, OUTPUT);
+		OUTPUT_STREAM.putFrame(OUTPUT);
+		
 		
 	}
 }

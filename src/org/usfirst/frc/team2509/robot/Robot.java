@@ -6,12 +6,9 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Timer;
 
 public class Robot extends IterativeRobot {
 	Vision Vision;
-	GripPipeline pipe;
-	//Vision2 Vision2;
 	UsbCamera cam;
 	Joystick stick;
 	CANTalon m1, m2, m3, m4,m5;
@@ -19,9 +16,10 @@ public class Robot extends IterativeRobot {
 	
 	public void robotInit() {
 		Vision = new Vision();
-		pipe = new GripPipeline();
 		//Vision2 = new Vision2();
+		
 		cam = Vision.FRONT_CAM;
+		cam.setBrightness(30);
 		stick= new Joystick(0);
 		m1= new CANTalon(0);
 		m2= new CANTalon(1);
@@ -35,9 +33,10 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
-		drive.drive(0.5, 0);
-		Timer.delay(2.0);
-		drive.drive(0, 0);
+		while(isEnabled()){
+			//Vision.cvt2Gray();}
+			Vision.Procces();
+		}
 	}
 
 	public void autonomousPeriodic() {
@@ -56,8 +55,9 @@ public class Robot extends IterativeRobot {
 			}
 			if(stick.getRawButton(2)){
 				m5.set(0);
-			}if(stick.getRawButton(11)){
-				Vision.cvt2Gray();
+			}
+			if(stick.getRawButton(12)){
+				Vision.Procces();
 			}
 			
 		}
