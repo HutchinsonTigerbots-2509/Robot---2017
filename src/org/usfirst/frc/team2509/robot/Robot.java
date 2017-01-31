@@ -34,13 +34,13 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousInit() {
 		while(isEnabled()){
-			//Vision.cvt2Gray();}
-			Vision.Procces();
+			Vision.cvt2Gray();
 		}
 	}
 
 	public void autonomousPeriodic() {
-		
+
+		Vision.cvt2Gray();
 	}
 
 	public void teleopPeriodic(){
