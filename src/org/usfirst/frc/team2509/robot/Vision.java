@@ -20,11 +20,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * 
+ * @author Nate
+ * 
  * ORGANIZE VARIABLES IN THIS ORDER(ALPHABETICALLY)
  * 1. JAVA
  * 2. FIRST/WPI
  * 3. OPENCV
- * @author Nate
  *
  */
 
@@ -87,8 +88,10 @@ public class Vision{
 		contours.clear();
 		CVSINK.grabFrame(SOURCE);
 		Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2RGB);
-		Imgproc.threshold(HSV, BINARY, 180, 200, Imgproc.THRESH_BINARY);
+		Imgproc.threshold(HSV, BINARY, 180, 200, Imgproc.THRESH_BINARY);	
 		Imgproc.cvtColor(BINARY, THRESH, Imgproc.COLOR_BGR2GRAY);
+
+		//Core.inRange(THRESH	, LOWER_BOUNDS, UPPER_BOUNDS, CLUSTERS);	
         Imgproc.findContours(THRESH, contours, HEIRARCHY, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
         for(MatOfPoint mop :contours){
 			Rect rec = Imgproc.boundingRect(mop);
