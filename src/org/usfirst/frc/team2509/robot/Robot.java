@@ -1,63 +1,63 @@
 package org.usfirst.frc.team2509.robot;
 
-import com.ctre.CANTalon;
-
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 
+import com.ctre.CANTalon;
+
 public class Robot extends IterativeRobot {
-	Vision Vision;
-	UsbCamera cam;
-	Joystick stick;
-	CANTalon m1, m2, m3, m4,m5;
-	RobotDrive drive;
+	Vision VISION;
+	UsbCamera CAM;
+	Joystick STICK;
+	CANTalon MOTOR1, MOTOR2, MOTOR3, MOTOR4,MOTOR5;
+	RobotDrive DRIVE;
 	
 	public void robotInit() {
-		Vision = new Vision();
+		VISION = new Vision();
 		//Vision2 = new Vision2();
 		
-		cam = Vision.FRONT_CAM;
-		cam.setBrightness(30);
-		stick= new Joystick(0);
-		m1= new CANTalon(0);
-		m2= new CANTalon(1);
-		m2.setInverted(true);
-		m3= new CANTalon(2);
-		m4= new CANTalon(3);
-		m4.setInverted(true);
-		m5 = new CANTalon(4);
-		drive= new RobotDrive(m1,m3,m2,m4);
+		CAM = VISION.FRONT_CAM;
+		CAM.setBrightness(30);
+		STICK= new Joystick(0);
+		MOTOR1= new CANTalon(0);
+		MOTOR2= new CANTalon(1);
+		MOTOR2.setInverted(true);
+		MOTOR3= new CANTalon(2);
+		MOTOR4= new CANTalon(3);
+		MOTOR4.setInverted(true);
+		MOTOR5 = new CANTalon(4);
+		DRIVE= new RobotDrive(MOTOR1,MOTOR3,MOTOR2,MOTOR4);
 		
 	}
 
 	public void autonomousInit() {
 		while(isEnabled()){
-			Vision.cvt2Gray();
+			VISION.cvt2Gray();
 		}
 	}
 
 	public void autonomousPeriodic() {
 
-		Vision.cvt2Gray();
+		VISION.cvt2Gray();
 	}
 
 	public void teleopPeriodic(){
-		//Vision.Procces();
-		drive.setSafetyEnabled(true);
+		//VISION.Procces();
+		DRIVE.setSafetyEnabled(true);
 		while(isEnabled()&& isOperatorControl()){
-			drive.mecanumDrive_Cartesian(getScaledX(), getScaledY(), getScaledZ(), 0);
-			if(stick.getRawButton(1)){
-				m5.set(0.25);
+			DRIVE.mecanumDrive_Cartesian(getScaledX(), getScaledY(), getScaledZ(), 0);
+			if(STICK.getRawButton(1)){
+				MOTOR5.set(0.25);
 			}else{
-				m5.set(0);
+				MOTOR5.set(0);
 			}
-			if(stick.getRawButton(2)){
-				m5.set(0);
+			if(STICK.getRawButton(2)){
+				MOTOR5.set(0);
 			}
-			if(stick.getRawButton(12)){
-				Vision.Procces();
+			if(STICK.getRawButton(12)){
+				VISION.Procces();
 			}
 			
 		}
@@ -67,13 +67,13 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public double getScaledX(){
-		return (stick.getX()*((stick.getRawAxis(3)+1.5)*0.4));
+		return (STICK.getX()*((STICK.getRawAxis(3)+1.5)*0.4));
 	}
 	public double getScaledY(){
-		return (stick.getY()*((stick.getRawAxis(3)+1.5)*0.4));
+		return (STICK.getY()*((STICK.getRawAxis(3)+1.5)*0.4));
 	}
 	public double getScaledZ(){
-		return (-stick.getZ()*((stick.getRawAxis(3)+1)*0.5));
+		return (-STICK.getZ()*((STICK.getRawAxis(3)+1)*0.5));
 	}
-	
+
 }
