@@ -60,7 +60,8 @@ public class Vision{
 		OUTPUT_STREAM = CameraServer.getInstance().putVideo("ALT-Cam", 640, 480);
 	public final Mat 
 		BINARY = new Mat(),
-		CLUSTERS = new Mat(),		
+		CLUSTERS = new Mat(),
+		CONTOURS = new Mat(),
 		HEIRARCHY = new Mat(),
 		HSV = new Mat(),
 		OUTPUT = new Mat(),
@@ -112,7 +113,8 @@ public class Vision{
 			SmartDashboard.putInt("Contours", contours.size());
 			SmartDashboard.putInt("Width", rec.width);
 		}
-		if(contours.size()==2){
+		
+		if(contours.size()==1){
 			Rect rec = Imgproc.boundingRect(contours.get(0));
 			Point center = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0);
 			Point centerw = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0 - 20);
@@ -163,33 +165,10 @@ public class Vision{
 	}
 
 	public void Procces(){
-		CVSINK.grabFrame(SOURCE);
-		Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2RGB);
-		Imgproc.threshold(HSV, BINARY, 180, 200, Imgproc.THRESH_BINARY);
-		Imgproc.cvtColor(BINARY, THRESH, Imgproc.COLOR_BGR2HSV);
-        Imgproc.findContours(THRESH, contours, HEIRARCHY, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-        for(MatOfPoint mop :contours){
-			Rect rec = Imgproc.boundingRect(mop);
-			Imgproc.rectangle(SOURCE, rec.br(), rec.tl(), RED);
-		}
-		for(Iterator<MatOfPoint> iterator = contours.iterator();iterator.hasNext();){
-			MatOfPoint matOfPoint = (MatOfPoint) iterator.next();
-			Rect rec = Imgproc.boundingRect(matOfPoint);
-			if( rec.height < 15 || rec.width < 15){
-				iterator.remove();
-			continue;
+		new Thread(()->{
+			while(FRAME_RATE<5){
+				cvt2Gray();
 			}
-			float aspect = (float)rec.width/(float)rec.height;
-			if(aspect < 1.0)
-				iterator.remove();
-		}
-		if(contours.size()==2){
-			Rect rec = Imgproc.boundingRect(contours.get(0));
-			Point center = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0);
-			Point centerw = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0 - 20);
-			Imgproc.putText(SOURCE, ""+(Point)rec.br(), center, Core.FONT_HERSHEY_PLAIN, 1, BLACK);
-			Imgproc.putText(SOURCE, ""+(Point)rec.tl(), centerw, Core.FONT_HERSHEY_PLAIN, 1, BLACK);
-		}
-		OUTPUT_STREAM.putFrame(SOURCE);
+		}).start();
 	}
 }

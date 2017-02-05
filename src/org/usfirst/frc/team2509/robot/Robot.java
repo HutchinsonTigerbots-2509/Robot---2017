@@ -1,11 +1,11 @@
 package org.usfirst.frc.team2509.robot;
 
+import com.ctre.CANTalon;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
-
-import com.ctre.CANTalon;
 
 public class Robot extends IterativeRobot {
 	Vision VISION;
@@ -29,12 +29,12 @@ public class Robot extends IterativeRobot {
 		MOTOR4.setInverted(true);
 		MOTOR5 = new CANTalon(4);
 		DRIVE= new RobotDrive(MOTOR1,MOTOR3,MOTOR2,MOTOR4);
-		
+		VISION.Procces();
 	}
 
 	public void autonomousInit() {
 		while(isEnabled()){
-			VISION.cvt2Gray();
+			//VISION.cvt2Gray();
 		}
 	}
 
