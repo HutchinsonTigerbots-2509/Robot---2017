@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.command.Command;
 //This took Alex and Mason 3hrs to do, and it would have taken Nate 5 minutes. This should tell you out
 
 
-public class climbUp extends Command {
+public class ClimbUp extends Command {
 	private CANTalon motor = RobotMap.tenzingNorgay;
-    public climbUp() {
+    public ClimbUp() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
