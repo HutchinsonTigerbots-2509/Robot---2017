@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 
 public class ClimbUp extends Command {
-	private Talon motor = RobotMap.tenzingNorgay;
+	private Talon motor = RobotMap.CLIMB_MOTOR;
     public ClimbUp() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

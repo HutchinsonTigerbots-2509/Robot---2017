@@ -3,18 +3,16 @@
  */
 package org.usfirst.frc.team2509.robot;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
-
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -23,21 +21,24 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * floating around.
  */
 public class RobotMap {
+    public static CANTalon CLIMB_MOTOR;
     public static CANTalon DT_LEFTFRONT;
     public static CANTalon DT_RIGHTFRONT;
     public static CANTalon DT_LEFTREAR;
     public static CANTalon DT_RIGHTREAR;
-    public static AnalogGyro GYRO;
+    public static AnalogGyro DT_GYRO;
     public static RobotDrive DRIVETRAIN;
-    public static CANTalon SWEEP_MOTOR;
+    public static UsbCamera GEAR_CAM;
+    public static UsbCamera SHOOT_CAM;
     public static CANTalon SHOOT_MOTOR;
     public static Encoder SHOOT_ENCODER;
     public static Talon SHOOT_KICKER;
-    public static Talon tenzingNorgay;
-
-    public static UsbCamera FRONT_CAM;
+    public static Talon SWEEP_MOTOR;
 
     public static void init() {
+    	CLIMB_MOTOR = new CANTalon(1);
+        LiveWindow.addActuator("Climb", "Motor", CLIMB_MOTOR);
+
         DT_LEFTFRONT = new CANTalon(0);
         LiveWindow.addActuator("DriveTrain", "DT_LEFTFRONT", DT_LEFTFRONT);
         
@@ -50,8 +51,8 @@ public class RobotMap {
         DT_RIGHTREAR = new CANTalon(3);
         LiveWindow.addActuator("DriveTrain", "DT_RIGHTREAER", DT_RIGHTREAR);
         
-        GYRO = new AnalogGyro(0);
-        LiveWindow.addSensor("Gyro", 0, GYRO);
+        DT_GYRO = new AnalogGyro(0);
+        LiveWindow.addSensor("Gyro", 0, DT_GYRO);
                 
         DRIVETRAIN = new RobotDrive(DT_LEFTFRONT, DT_LEFTREAR,
               DT_RIGHTFRONT, DT_RIGHTREAR);
@@ -64,8 +65,12 @@ public class RobotMap {
         DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
         DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
         
-        SWEEP_MOTOR = new CANTalon(5);
-        LiveWindow.addActuator("Sweeper", "Motor", (CANTalon) SWEEP_MOTOR);
+        GEAR_CAM = CameraServer.getInstance().startAutomaticCapture();
+        
+        SHOOT_CAM = CameraServer.getInstance().startAutomaticCapture();
+        
+        SHOOT_KICKER = new Talon(8);
+        LiveWindow.addActuator("Shooter", "Kicker", SHOOT_KICKER);
         
         SHOOT_MOTOR = new CANTalon(7);
         SHOOT_MOTOR.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
@@ -78,20 +83,8 @@ public class RobotMap {
         //SHOOT_MOTOR.setI();
         //SHOOT_MOTOR.setD();
         LiveWindow.addActuator("Shooter", "Motor", (CANTalon) SHOOT_MOTOR);
-
-        
-        
-        SHOOT_ENCODER = new Encoder(0, 1, false, EncodingType.k4X);
-        LiveWindow.addSensor("Shooter", "Encoder", SHOOT_ENCODER);
-        SHOOT_ENCODER.setDistancePerPulse(1.0);
-        SHOOT_ENCODER.setPIDSourceType(PIDSourceType.kRate);
-        
-        SHOOT_KICKER = new Talon(8);
-        LiveWindow.addActuator("Shooter", "Kicker", SHOOT_KICKER);
-        
-        tenzingNorgay = new Talon(1);
-        LiveWindow.addActuator("Climb", "Motor", tenzingNorgay);
-
-        FRONT_CAM = CameraServer.getInstance().startAutomaticCapture();
+                
+        SWEEP_MOTOR = new Talon(5);
+        LiveWindow.addActuator("Sweeper", "Motor", (Talon) SWEEP_MOTOR);
     }
 }

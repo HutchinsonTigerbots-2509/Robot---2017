@@ -39,6 +39,7 @@ public class OI {
         OPSTICK = new Joystick(0);
         COOPSTICK = new Joystick(1);
         // SmartDashboard Buttons
+        SmartDashboard.putData("Climb Up", new ClimbUp());
         SmartDashboard.putData("OpDrive", new OpDrive());
         SmartDashboard.putData("Shooter Start", new ShooterRun());
         SmartDashboard.putData("ReverseSweep", new SweeperReverse());

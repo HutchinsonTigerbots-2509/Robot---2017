@@ -29,7 +29,7 @@ public class DriveTrain extends Subsystem {
     private final CANTalon RIGHT_FRONT = RobotMap.DT_RIGHTFRONT;
     private final CANTalon LEFT_REAR = RobotMap.DT_LEFTREAR;
     private final CANTalon RIGHT_REAR = RobotMap.DT_RIGHTREAR;
-    public final AnalogGyro GYRO = RobotMap.GYRO;
+    public final AnalogGyro GYRO = RobotMap.DT_GYRO;
     private final RobotDrive DRIVETRAIN = RobotMap.DRIVETRAIN;
     
     // Put methods for controlling this subsystem

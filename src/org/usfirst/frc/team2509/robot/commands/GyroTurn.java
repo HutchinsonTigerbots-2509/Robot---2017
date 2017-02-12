@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class GyroTurn extends Command {
 	private Joystick stick = Robot.oi.getOpStick();
 	private RobotDrive drive = RobotMap.DRIVETRAIN;
-    private AnalogGyro gyro = RobotMap.GYRO;
+    private AnalogGyro gyro = RobotMap.DT_GYRO;
 	public GyroTurn() {
     	
     }

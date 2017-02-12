@@ -53,7 +53,7 @@ public class Vision extends Subsystem {
 	private final CvSource 
 		OUTPUT_STREAM = CameraServer.getInstance().putVideo("ALT-Cam", 640, 480);
 	private final UsbCamera 
-		FRONT_CAM = RobotMap.FRONT_CAM;
+		FRONT_CAM = RobotMap.GEAR_CAM;
 	public final Mat 
 		BINARY = new Mat(),
 		CLUSTERS = new Mat(),		

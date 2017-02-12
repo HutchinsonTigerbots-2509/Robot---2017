@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Climb extends Subsystem {
-    private final Talon MOTOR = RobotMap.tenzingNorgay;
+    private final Talon MOTOR = RobotMap.CLIMB_MOTOR;
 
 
 
