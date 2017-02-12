@@ -48,9 +48,9 @@ public class OI {
         CLIMB.whileHeld(new ClimbUp());
         SHOOT = new JoystickButton(OPSTICK, 1);
         SHOOT.whileHeld(new ShooterRun());
-        FORWARD_SWEEP = new JoystickButton(COOPSTICK,5);
+        FORWARD_SWEEP = new JoystickButton(COOPSTICK,3);
         FORWARD_SWEEP.whileHeld(new SweeperForward());
-        REVERSE_SWEEP = new JoystickButton(COOPSTICK, 3);
+        REVERSE_SWEEP = new JoystickButton(COOPSTICK, 5);
         REVERSE_SWEEP.whileHeld(new SweeperReverse());
 	}
     public Joystick getOpStick() {

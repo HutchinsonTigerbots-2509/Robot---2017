@@ -1,17 +1,21 @@
 package org.usfirst.frc.team2509.robot.commands;
 
 import org.usfirst.frc.team2509.robot.Robot;
+import org.usfirst.frc.team2509.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
 public class GyroTurn extends Command {
-	private Command OpDrive = new OpDrive();
 	private Joystick stick = Robot.oi.getOpStick();
-    public GyroTurn() {
+	private RobotDrive drive = RobotMap.DRIVETRAIN;
+    private AnalogGyro gyro = RobotMap.GYRO;
+	public GyroTurn() {
     	
     }
 
@@ -21,8 +25,34 @@ public class GyroTurn extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(stick.getPOV()==0){
-    		
+    	//POV gyro stuff, eg put POV to 0(360) it turns to 0(centers)
+    	if(stick.getPOV()==0.0){
+    		while(gyro.getAngle()<360&&gyro.getAngle()>180){
+    			drive.mecanumDrive_Cartesian(0, 0, 0.5, gyro.getAngle());
+    		}
+    		if(gyro.getAngle()<360&&gyro.getAngle()>345){
+    			drive.mecanumDrive_Cartesian(0, 0, 0, gyro.getAngle());
+    		}
+    	}else if(stick.getPOV()==180.0){
+    		while(gyro.getAngle()<180&&gyro.getAngle()>0){
+    			drive.mecanumDrive_Cartesian(0, 0, 0.5, gyro.getAngle());
+    		}
+    		if(gyro.getAngle()<180&&gyro.getAngle()>160){
+    			drive.mecanumDrive_Cartesian(0, 0, 0, gyro.getAngle());
+    		}
+    	}else if(stick.getPOV()==90.0){ 
+    		while(gyro.getAngle()<90&&(gyro.getAngle()>270||gyro.getAngle()>0)){
+    			drive.mecanumDrive_Cartesian(0, 0, 0.5, gyro.getAngle());
+    		}
+    		if(gyro.getAngle()<90&&gyro.getAngle()>70){
+    			drive.mecanumDrive_Cartesian(0, 0, 0.5, gyro.getAngle());
+    		}
+    	}else if(stick.getPOV()==270.0){
+    		while(gyro.getAngle()<270&&gyro.getAngle()>90);
+    			drive.mecanumDrive_Cartesian(0, 0, 0.5, gyro.getAngle());
+    		}
+			if(gyro.getAngle()<270&&gyro.getAngle()>250){
+				drive.mecanumDrive_Cartesian(0, 0, 0.5, gyro.getAngle());
     	}
     }
 

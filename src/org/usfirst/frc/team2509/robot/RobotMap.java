@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
@@ -31,8 +32,8 @@ public class RobotMap {
     public static CANTalon SWEEP_MOTOR;
     public static CANTalon SHOOT_MOTOR;
     public static Encoder SHOOT_ENCODER;
-    public static CANTalon SHOOT_KICKER;
-    public static CANTalon tenzingNorgay;
+    public static Talon SHOOT_KICKER;
+    public static Talon tenzingNorgay;
 
     public static UsbCamera FRONT_CAM;
 
@@ -80,16 +81,15 @@ public class RobotMap {
 
         
         
-        
         SHOOT_ENCODER = new Encoder(0, 1, false, EncodingType.k4X);
         LiveWindow.addSensor("Shooter", "Encoder", SHOOT_ENCODER);
         SHOOT_ENCODER.setDistancePerPulse(1.0);
         SHOOT_ENCODER.setPIDSourceType(PIDSourceType.kRate);
         
-        SHOOT_KICKER = new CANTalon(8);
+        SHOOT_KICKER = new Talon(8);
         LiveWindow.addActuator("Shooter", "Kicker", SHOOT_KICKER);
         
-        tenzingNorgay = new CANTalon(6);
+        tenzingNorgay = new Talon(1);
         LiveWindow.addActuator("Climb", "Motor", tenzingNorgay);
 
         FRONT_CAM = CameraServer.getInstance().startAutomaticCapture();
