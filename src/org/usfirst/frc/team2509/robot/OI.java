@@ -20,6 +20,7 @@ import org.usfirst.frc.team2509.robot.commands.SweeperReverse;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -34,6 +35,10 @@ public class OI {
     public JoystickButton FORWARD_SWEEP;
     public JoystickButton REVERSE_SWEEP;
     public JoystickButton SHOOT;
+    public String defaultAuto = "Default";
+	public String customAuto = "My Auto";
+	public String autoSelected;
+	public SendableChooser<String> chooser = new SendableChooser<>();
 
 	public OI() {
         OPSTICK = new Joystick(0);
@@ -53,6 +58,10 @@ public class OI {
         FORWARD_SWEEP.whileHeld(new SweeperForward());
         REVERSE_SWEEP = new JoystickButton(COOPSTICK, 5);
         REVERSE_SWEEP.whileHeld(new SweeperReverse());
+        //Autonomous Chooser
+        chooser.addDefault("Default Auto", defaultAuto);
+		chooser.addObject("My Auto", customAuto);
+		SmartDashboard.putData("Auto choices", chooser);
 	}
     public Joystick getOpStick() {
         return OPSTICK;

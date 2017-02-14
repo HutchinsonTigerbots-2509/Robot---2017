@@ -3,6 +3,9 @@
  */
 package org.usfirst.frc.team2509.robot;
 
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -10,9 +13,6 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -52,16 +52,17 @@ public class RobotMap {
         LiveWindow.addActuator("DriveTrain", "DT_RIGHTREAER", DT_RIGHTREAR);
         
         DT_GYRO = new AnalogGyro(0);
+        DT_GYRO.initGyro();
+        DT_GYRO.calibrate();
         LiveWindow.addSensor("Gyro", 0, DT_GYRO);
                 
         DRIVETRAIN = new RobotDrive(DT_LEFTFRONT, DT_LEFTREAR,
-              DT_RIGHTFRONT, DT_RIGHTREAR);
+        		DT_RIGHTFRONT, DT_RIGHTREAR);
         
         DRIVETRAIN.setSafetyEnabled(false);
         DRIVETRAIN.setExpiration(1.0);
         DRIVETRAIN.setSensitivity(1.0);
         DRIVETRAIN.setMaxOutput(1.0);
-
         DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
         DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
         
@@ -86,5 +87,6 @@ public class RobotMap {
                 
         SWEEP_MOTOR = new Talon(5);
         LiveWindow.addActuator("Sweeper", "Motor", (Talon) SWEEP_MOTOR);
+        
     }
 }
