@@ -50,6 +50,7 @@ public class Vision{
 		BOILER_WIDTH = 15,
 		FRAME_RATE = 0,
 		GEAR_PEG_HEIGHT =16;
+	public ArrayList Center[];
 	public final UsbCamera 
 	//IP FOR STREAM http://roborio-2509-frc.local:1181/?action=stream
 		FRONT_CAM = CameraServer.getInstance().startAutomaticCapture();
@@ -151,6 +152,12 @@ public class Vision{
 				if(aspect > 0.5){
 					iterator.remove();
 				}
+				
+			}
+			for(int c=0;c<contours.size();c++){
+				Rect rec = Imgproc.boundingRect(contours.get(c));
+				//Center[c]= rec.x;
+				
 			}
 			if(contours.size()==2){
 				Rect rec = Imgproc.boundingRect(contours.get(0));
@@ -160,6 +167,7 @@ public class Vision{
 				Imgproc.putText(SOURCE, ""+(Point)rec.tl(), centerw, Core.FONT_HERSHEY_PLAIN, 1, BLACK);
 				
 			}
+			
 			OUTPUT_STREAM.putFrame(SOURCE);
 		}
 	}

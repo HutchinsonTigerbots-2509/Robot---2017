@@ -36,7 +36,7 @@ public class RobotMap {
     public static Talon SWEEP_MOTOR;
 
     public static void init() {
-    	CLIMB_MOTOR = new CANTalon(1);
+    	CLIMB_MOTOR = new CANTalon(5);
         LiveWindow.addActuator("Climb", "Motor", CLIMB_MOTOR);
 
         DT_LEFTFRONT = new CANTalon(0);
@@ -85,7 +85,7 @@ public class RobotMap {
         //SHOOT_MOTOR.setD();
         LiveWindow.addActuator("Shooter", "Motor", (CANTalon) SHOOT_MOTOR);
                 
-        SWEEP_MOTOR = new Talon(5);
+        SWEEP_MOTOR = new Talon(1);
         LiveWindow.addActuator("Sweeper", "Motor", (Talon) SWEEP_MOTOR);
         
     }

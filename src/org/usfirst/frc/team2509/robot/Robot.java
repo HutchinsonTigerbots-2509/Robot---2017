@@ -4,6 +4,7 @@
 package org.usfirst.frc.team2509.robot;
 
 import org.usfirst.frc.team2509.robot.commands.AutonomousCommand;
+import org.usfirst.frc.team2509.robot.commands.FilterTargets;
 import org.usfirst.frc.team2509.robot.commands.GyroTurn;
 import org.usfirst.frc.team2509.robot.commands.OpDrive;
 import org.usfirst.frc.team2509.robot.commands.SweeperForward;
@@ -31,6 +32,7 @@ public class Robot extends IterativeRobot {
 
     public Command 
     	autonomousCommand,
+    	filterTarget,
     	gyroTurn,
     	opDrive,
     	sweepForward;
@@ -61,11 +63,11 @@ public class Robot extends IterativeRobot {
         // instantiate the command used for the autonomous period
         
         autonomousCommand = new AutonomousCommand();
+        filterTarget = new FilterTargets();
         sweepForward = new SweeperForward();
         gyroTurn = new GyroTurn();
         opDrive = new OpDrive();
         OpStick = oi.OPSTICK;
-  
     }
 
     /**

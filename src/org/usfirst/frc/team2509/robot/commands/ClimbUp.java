@@ -2,7 +2,8 @@ package org.usfirst.frc.team2509.robot.commands;
 
 import org.usfirst.frc.team2509.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.Talon;
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.command.Command;
 /**
  * 
@@ -13,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 
 public class ClimbUp extends Command {
-	private Talon motor = RobotMap.CLIMB_MOTOR;
+	private CANTalon motor = RobotMap.CLIMB_MOTOR;
     public ClimbUp() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

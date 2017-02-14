@@ -14,6 +14,7 @@ import org.usfirst.frc.team2509.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -26,14 +27,18 @@ public class AutonomousCommand extends Command {
 
     }
 
-    // Called just before this Command runs the first time
+    // Called just before this Command runs the first time 
     protected void initialize() {
-    	
+    		DT.mecanumDrive_Cartesian(0, 0.75, 0, GYRO.getAngle());
+    		Timer.delay(1.15);
+    		DT.drive(0,0);
+    		
     }
-
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
     }
+    
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
@@ -42,6 +47,7 @@ public class AutonomousCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	DT.drive(0, 0);
     }
 
     // Called when another command which requires one or more of the same
