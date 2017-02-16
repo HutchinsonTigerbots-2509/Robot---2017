@@ -12,58 +12,41 @@
 package org.usfirst.frc.team2509.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.usfirst.frc.team2509.robot.RobotMap;
+import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
-import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
  *
  */
 public class Vision extends Subsystem {
-	
-	
-	private final ArrayList<MatOfPoint> 
+	private int CENTER[];
+	private ArrayList<MatOfPoint>
 		contours = new ArrayList<MatOfPoint>();
-	private final boolean 
-		isINIT = true;
-	protected final double
-		CAMERA_ANGLE = 15,
-		CAMERA_OFFSET_FRONT = 0,
-		CAMERA_OFFSET_CENTER = 0,
-		VERTICAL_FOV = 30.25,
-		HORIZANTAL_FOV = 53.75;
-	protected final int
-		CAMERA_HEIGHT = 0,
-		BOILER_HEIGHT = 88,
-		BOILER_WIDTH = 15,
-		FRAME_RATE = 0,
-		GEAR_PEG_HEIGHT =16;
 	private final CvSink
 		CVSINK = CameraServer.getInstance().getVideo();
 	private final CvSource 
 		OUTPUT_STREAM = CameraServer.getInstance().putVideo("ALT-Cam", 640, 480);
-	private final UsbCamera 
-		FRONT_CAM = RobotMap.GEAR_CAM;
-	public final Mat 
+	private final Mat
 		BINARY = new Mat(),
-		CLUSTERS = new Mat(),		
+		BLUR = new Mat(),
+		CONTOURS = new Mat(),
 		HEIRARCHY = new Mat(),
 		HSV = new Mat(),
-		OUTPUT = new Mat(),
-		SOURCE = new Mat(),
 		THRESH = new Mat();
 	protected final Scalar 
-		//COLOR VALUES
+	//COLOR VALUES
 		BLACK = new Scalar(0,0,0),
 		BLUE = new Scalar(255, 0, 0),
 		GREEN = new Scalar(0, 255, 0),
@@ -72,11 +55,31 @@ public class Vision extends Subsystem {
 		//Thresholds values
 		LOWER_BOUNDS = new Scalar(180,190,40),
 		UPPER_BOUNDS = new Scalar(200,210,60);
-	protected final Size 
-		RESIZE = new Size(320,240);
 	
     public void initDefaultCommand() {
     }
-    
+    public void filterImage(Mat source){
+    	new Thread(()->{
+    		Imgproc.cvtColor(source, HSV, Imgproc.COLOR_BGR2RGB);
+    		Imgproc.threshold(HSV, BINARY, 180, 200, Imgproc.THRESH_BINARY);	
+    		Imgproc.cvtColor(BINARY, THRESH, Imgproc.COLOR_BGR2GRAY);
+    		Imgproc.findContours(THRESH, contours, HEIRARCHY, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+    		for(MatOfPoint mop :contours){
+    			Rect rec = Imgproc.boundingRect(mop);
+    			Imgproc.rectangle(CONTOURS, rec.br(), rec.tl(), RED);
+    		}
+    		for(Iterator<MatOfPoint> iterator = contours.iterator();iterator.hasNext();){
+    			MatOfPoint matOfPoint = (MatOfPoint) iterator.next();
+    			Rect rec = Imgproc.boundingRect(matOfPoint);
+    			CENTER[0] = rec.x;
+    		}
+    		for(int j=0;j<=contours.size();j++){
+    			Rect rec = Imgproc.boundingRect(contours.get(j));
+    			CENTER[j] = rec.x;
+    			SmartDashboard.putInt("Contour " + j, CENTER[j]);
+    		}
+    		OUTPUT_STREAM.putFrame(THRESH);
+    	}).start();
+    }
 }
 
