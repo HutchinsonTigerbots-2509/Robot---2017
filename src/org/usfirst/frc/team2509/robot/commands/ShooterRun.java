@@ -18,7 +18,7 @@ public class ShooterRun extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	MOTOR.set(0.75);
+    	MOTOR.set(0.95);
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -31,7 +31,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class Vision extends Subsystem {
-	private int CENTER[];
+	private int 
+		CENTER[],
+		WIDTH[];
 	private ArrayList<MatOfPoint>
 		contours = new ArrayList<MatOfPoint>();
 	private final CvSink
@@ -60,6 +62,9 @@ public class Vision extends Subsystem {
     }
     public void filterImage(Mat source){
     	new Thread(()->{
+    		while(true){
+    		contours.clear();
+    		CVSINK.grabFrame(source);
     		Imgproc.cvtColor(source, HSV, Imgproc.COLOR_BGR2RGB);
     		Imgproc.threshold(HSV, BINARY, 180, 200, Imgproc.THRESH_BINARY);	
     		Imgproc.cvtColor(BINARY, THRESH, Imgproc.COLOR_BGR2GRAY);
@@ -71,14 +76,17 @@ public class Vision extends Subsystem {
     		for(Iterator<MatOfPoint> iterator = contours.iterator();iterator.hasNext();){
     			MatOfPoint matOfPoint = (MatOfPoint) iterator.next();
     			Rect rec = Imgproc.boundingRect(matOfPoint);
-    			CENTER[0] = rec.x;
+    			
     		}
     		for(int j=0;j<=contours.size();j++){
     			Rect rec = Imgproc.boundingRect(contours.get(j));
     			CENTER[j] = rec.x;
+    			WIDTH[j] = rec.width;
     			SmartDashboard.putInt("Contour " + j, CENTER[j]);
+    			SmartDashboard.putDouble("Contour Width " + j, WIDTH[j]);
     		}
     		OUTPUT_STREAM.putFrame(THRESH);
+    		}
     	}).start();
     }
 }

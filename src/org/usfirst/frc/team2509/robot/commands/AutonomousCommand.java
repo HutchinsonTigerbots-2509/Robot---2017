@@ -29,8 +29,8 @@ public class AutonomousCommand extends Command {
 
     // Called just before this Command runs the first time 
     protected void initialize() {
-    		DT.mecanumDrive_Cartesian(0, 0.75, 0, GYRO.getAngle());
-    		Timer.delay(1.15);
+    		DT.drive(0.75, GYRO.getAngle()*0.03);
+    		Timer.delay(0.9);
     		DT.drive(0,0);
     		
     }

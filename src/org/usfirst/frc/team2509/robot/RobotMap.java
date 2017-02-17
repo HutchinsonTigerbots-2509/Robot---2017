@@ -66,14 +66,14 @@ public class RobotMap {
         DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
         DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
         
-        GEAR_CAM = CameraServer.getInstance().startAutomaticCapture();
+        GEAR_CAM = CameraServer.getInstance().startAutomaticCapture("GEAR", 0);
         
-        SHOOT_CAM = CameraServer.getInstance().startAutomaticCapture();
+        SHOOT_CAM = CameraServer.getInstance().startAutomaticCapture("SHOOTER", 1);
         
-        SHOOT_KICKER = new Talon(8);
+        SHOOT_KICKER = new Talon(0);
         LiveWindow.addActuator("Shooter", "Kicker", SHOOT_KICKER);
         
-        SHOOT_MOTOR = new CANTalon(7);
+        SHOOT_MOTOR = new CANTalon(8);
         SHOOT_MOTOR.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         SHOOT_MOTOR.reverseSensor(false);
         SHOOT_MOTOR.configNominalOutputVoltage(+0.0f, -0.0f);
