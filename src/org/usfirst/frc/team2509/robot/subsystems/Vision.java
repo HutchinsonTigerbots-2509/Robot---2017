@@ -14,15 +14,19 @@ package org.usfirst.frc.team2509.robot.subsystems;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team2509.robot.commands.FilterTargets;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -34,6 +38,8 @@ public class Vision extends Subsystem {
 	private int 
 		CENTER[],
 		WIDTH[];
+	public Command filterTargets = new FilterTargets();
+	public Rect TARGET;
 	private ArrayList<MatOfPoint>
 		contours = new ArrayList<MatOfPoint>();
 	private final CvSink
@@ -44,8 +50,10 @@ public class Vision extends Subsystem {
 		BINARY = new Mat(),
 		BLUR = new Mat(),
 		CONTOURS = new Mat(),
+		CLUSTERS = new Mat(),
 		HEIRARCHY = new Mat(),
 		HSV = new Mat(),
+		SOURCE = new Mat(),
 		THRESH = new Mat();
 	protected final Scalar 
 	//COLOR VALUES
@@ -59,34 +67,53 @@ public class Vision extends Subsystem {
 		UPPER_BOUNDS = new Scalar(200,210,60);
 	
     public void initDefaultCommand() {
+    	filterTargets.start();
     }
-    public void filterImage(Mat source){
+    public void filterImage(){
     	new Thread(()->{
     		while(true){
-    		contours.clear();
-    		CVSINK.grabFrame(source);
-    		Imgproc.cvtColor(source, HSV, Imgproc.COLOR_BGR2RGB);
-    		Imgproc.threshold(HSV, BINARY, 180, 200, Imgproc.THRESH_BINARY);	
-    		Imgproc.cvtColor(BINARY, THRESH, Imgproc.COLOR_BGR2GRAY);
-    		Imgproc.findContours(THRESH, contours, HEIRARCHY, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-    		for(MatOfPoint mop :contours){
-    			Rect rec = Imgproc.boundingRect(mop);
-    			Imgproc.rectangle(source, rec.br(), rec.tl(), RED);
-    		}
-    		for(Iterator<MatOfPoint> iterator = contours.iterator();iterator.hasNext();){
-    			MatOfPoint matOfPoint = (MatOfPoint) iterator.next();
-    			Rect rec = Imgproc.boundingRect(matOfPoint);
-    			
-    		}
-    		for(int j=0;j<=contours.size();j++){
-    			Rect rec = Imgproc.boundingRect(contours.get(j));
-    			CENTER[j] = rec.x;
-    			WIDTH[j] = rec.width;
-    			SmartDashboard.putInt("Contour " + j, CENTER[j]);
-    			SmartDashboard.putDouble("Contour Width " + j, WIDTH[j]);
-    		}
-    		OUTPUT_STREAM.putFrame(source);
-    		}
+    			contours.clear();
+    			CVSINK.grabFrame(SOURCE);
+    		//	CVSINK.grabFrameNoTimeout(SOURCE);
+    			Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2RGB);
+    			Imgproc.threshold(HSV, BINARY, 180, 190, Imgproc.THRESH_BINARY_INV);	
+    			Imgproc.cvtColor(BINARY, THRESH, Imgproc.COLOR_HSV2BGR);
+    			Imgproc.cvtColor(THRESH, CLUSTERS, Imgproc.COLOR_BGR2GRAY);
+    			Mat GRAY = CLUSTERS;
+    			//Core.inRange(THRESH	, LOWER_BOUNDS, UPPER_BOUNDS, CLUSTERS);	
+    			Imgproc.Canny(GRAY, HEIRARCHY, 2, 4);
+    			Imgproc.findContours(HEIRARCHY, contours, new Mat(),Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+    	        for(MatOfPoint mop :contours){
+    				Rect rec = Imgproc.boundingRect(mop);
+    				Imgproc.rectangle(SOURCE, rec.br(), rec.tl(), RED);
+    			}
+    			for(Iterator<MatOfPoint> iterator = contours.iterator();iterator.hasNext();){
+    				MatOfPoint matOfPoint = (MatOfPoint) iterator.next();
+    				Rect rec = Imgproc.boundingRect(matOfPoint);
+    				if( rec.height < 10 || rec.width < 5){
+    					iterator.remove();
+    				continue;
+    				}
+    			//	float aspect = (float)rec.width/(float)rec.height;
+    			//	if(aspect <0.35||aspect>0.45){
+    			//		iterator.remove();
+    					
+    				//}
+    				TARGET = rec;
+    				SmartDashboard.putInt("Contours", contours.size());
+    				SmartDashboard.putInt("Width", rec.width);
+    			}			
+    			if(contours.size()==3){
+    				Rect rec = Imgproc.boundingRect(contours.get(0));
+    				Point center = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0);
+    				Point centerw = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0 - 20);
+    				SmartDashboard.putString("Bottom Right:", ""+(Point)rec.br());
+    				SmartDashboard.putString("Top Left", ""+(Point)rec.tl());
+    				Imgproc.putText(SOURCE, ""+(Point)rec.br(), center, Core.FONT_HERSHEY_PLAIN, 1, BLACK);
+    				Imgproc.putText(SOURCE, ""+(Point)rec.tl(), centerw, Core.FONT_HERSHEY_PLAIN, 1, BLACK);
+    			}
+    			OUTPUT_STREAM.putFrame(SOURCE);
+    			}
     	}).start();
     }
 }

@@ -68,6 +68,9 @@ public class Robot extends IterativeRobot {
         gyroTurn = new GyroTurn();
         opDrive = new OpDrive();
         OpStick = oi.OPSTICK;
+        Robot.vision.filterImage();
+        vision.initDefaultCommand();
+       // SmartDashboard.putInt("WIDTH", vision.TARGET.width);
     }
 
     /**
