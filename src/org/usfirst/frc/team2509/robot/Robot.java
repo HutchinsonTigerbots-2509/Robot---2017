@@ -119,6 +119,7 @@ public class Robot extends IterativeRobot {
       //  SmartDashboard.putDouble("Encoder", RobotMap.SHOOT_MOTOR.getEncVelocity());
         SmartDashboard.putInt("POV", OpStick.getPOV());
         SmartDashboard.putDouble("GYRO ANGLE" , RobotMap.DT_GYRO.getAngle());
+        
     }
 
     /**

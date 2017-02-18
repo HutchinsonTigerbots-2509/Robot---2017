@@ -37,7 +37,7 @@ public class Vision extends Subsystem {
 	private ArrayList<MatOfPoint>
 		contours = new ArrayList<MatOfPoint>();
 	private final CvSink
-		CVSINK = CameraServer.getInstance().getVideo();
+		CVSINK = CameraServer.getInstance().getVideo("GEAR");
 	private final CvSource 
 		OUTPUT_STREAM = CameraServer.getInstance().putVideo("ALT-Cam", 640, 480);
 	private final Mat
@@ -71,7 +71,7 @@ public class Vision extends Subsystem {
     		Imgproc.findContours(THRESH, contours, HEIRARCHY, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
     		for(MatOfPoint mop :contours){
     			Rect rec = Imgproc.boundingRect(mop);
-    			Imgproc.rectangle(CONTOURS, rec.br(), rec.tl(), RED);
+    			Imgproc.rectangle(source, rec.br(), rec.tl(), RED);
     		}
     		for(Iterator<MatOfPoint> iterator = contours.iterator();iterator.hasNext();){
     			MatOfPoint matOfPoint = (MatOfPoint) iterator.next();
@@ -85,7 +85,7 @@ public class Vision extends Subsystem {
     			SmartDashboard.putInt("Contour " + j, CENTER[j]);
     			SmartDashboard.putDouble("Contour Width " + j, WIDTH[j]);
     		}
-    		OUTPUT_STREAM.putFrame(THRESH);
+    		OUTPUT_STREAM.putFrame(source);
     		}
     	}).start();
     }

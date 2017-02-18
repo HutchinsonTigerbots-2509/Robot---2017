@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class RobotMap {
     public static CANTalon CLIMB_MOTOR;
+    public static Talon CLIMB_ALT;
     public static CANTalon DT_LEFTFRONT;
     public static CANTalon DT_RIGHTFRONT;
     public static CANTalon DT_LEFTREAR;
@@ -33,11 +34,13 @@ public class RobotMap {
     public static CANTalon SHOOT_MOTOR;
     public static Encoder SHOOT_ENCODER;
     public static Talon SHOOT_KICKER;
+    
     public static Talon SWEEP_MOTOR;
 
     public static void init() {
     	CLIMB_MOTOR = new CANTalon(5);
         LiveWindow.addActuator("Climb", "Motor", CLIMB_MOTOR);
+        CLIMB_ALT = new Talon(2);
 
         DT_LEFTFRONT = new CANTalon(0);
         LiveWindow.addActuator("DriveTrain", "DT_LEFTFRONT", DT_LEFTFRONT);
@@ -56,21 +59,22 @@ public class RobotMap {
         DT_GYRO.calibrate();
         LiveWindow.addSensor("Gyro", 0, DT_GYRO);
                 
-        DRIVETRAIN = new RobotDrive(DT_LEFTFRONT, DT_LEFTREAR,
-        		DT_RIGHTFRONT, DT_RIGHTREAR);
-        
+        DRIVETRAIN = new RobotDrive(DT_LEFTFRONT, DT_LEFTREAR,DT_RIGHTFRONT, DT_RIGHTREAR);
         DRIVETRAIN.setSafetyEnabled(false);
         DRIVETRAIN.setExpiration(1.0);
         DRIVETRAIN.setSensitivity(1.0);
         DRIVETRAIN.setMaxOutput(1.0);
         DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
         DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
-        
+            
         GEAR_CAM = CameraServer.getInstance().startAutomaticCapture("GEAR", 0);
+        GEAR_CAM.setBrightness(30);
         
         SHOOT_CAM = CameraServer.getInstance().startAutomaticCapture("SHOOTER", 1);
+        SHOOT_CAM.setBrightness(30);
         
         SHOOT_KICKER = new Talon(0);
+        SHOOT_KICKER.setInverted(true);
         LiveWindow.addActuator("Shooter", "Kicker", SHOOT_KICKER);
         
         SHOOT_MOTOR = new CANTalon(8);
