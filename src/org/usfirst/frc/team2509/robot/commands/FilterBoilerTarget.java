@@ -22,13 +22,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class FilterGearTarget extends Command {
+public class FilterBoilerTarget extends Command {
 	private ArrayList<MatOfPoint>
 		contours = new ArrayList<MatOfPoint>();
 	private final CvSink
-		CVSINK = CameraServer.getInstance().getVideo("GEAR");
+		CVSINK = CameraServer.getInstance().getVideo("SHOOTER");
 	private final CvSource 
-		OUTPUT_STREAM = CameraServer.getInstance().putVideo("ALT-GEAR", 640, 480);
+		OUTPUT_STREAM = CameraServer.getInstance().putVideo("ALT-SHOOTER", 320, 240);
 	private final Mat
 		BINARY = new Mat(),
 		CLUSTERS = new Mat(),
@@ -46,14 +46,14 @@ public class FilterGearTarget extends Command {
 		//Thresholds values
 		LOWER_BOUNDS = new Scalar(180,190,40),
 		UPPER_BOUNDS = new Scalar(200,210,60);
-	private Rect TARGET = Robot.vision.GEAR_TARGET;
+	private Rect TARGET = Robot.vision.BOILER_TARGET;
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	new Thread(()->{
     		while(true){
     			contours.clear();
-    			RobotMap.GEAR_CAM.setBrightness(0);
+    			RobotMap.SHOOT_CAM.setBrightness(0);
     			CVSINK.grabFrame(SOURCE);
     			Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2RGB);
     			Imgproc.threshold(HSV, BINARY, 180, 190, Imgproc.THRESH_BINARY_INV);	
@@ -74,7 +74,7 @@ public class FilterGearTarget extends Command {
     					iterator.remove();
     				continue;
     				}
-    				Robot.vision.GEAR_TARGET = rec;
+    				Robot.vision.BOILER_TARGET = rec;
     				SmartDashboard.putInt("Contours", contours.size());
     				SmartDashboard.putInt("X", rec.x);
     				SmartDashboard.putInt("Width", rec.width);

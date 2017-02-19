@@ -21,6 +21,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team2509.robot.commands.FilterBoilerTarget;
 import org.usfirst.frc.team2509.robot.commands.FilterGearTarget;
 
 import edu.wpi.cscore.CvSink;
@@ -35,11 +36,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class Vision extends Subsystem {
-	private int 
-		CENTER[],
-		WIDTH[];
 	public Command filterGear = new FilterGearTarget();
-	public Rect TARGET;
+	public Command filterBoiler = new FilterBoilerTarget();
+	public Rect GEAR_TARGET, BOILER_TARGET;
 	private ArrayList<MatOfPoint>
 		contours = new ArrayList<MatOfPoint>();
 	private final CvSink
@@ -48,8 +47,6 @@ public class Vision extends Subsystem {
 		OUTPUT_STREAM = CameraServer.getInstance().putVideo("ALT-Cam", 640, 480);
 	private final Mat
 		BINARY = new Mat(),
-		BLUR = new Mat(),
-		CONTOURS = new Mat(),
 		CLUSTERS = new Mat(),
 		HEIRARCHY = new Mat(),
 		HSV = new Mat(),
@@ -68,6 +65,7 @@ public class Vision extends Subsystem {
 	
     public void initDefaultCommand() {
     	filterGear.start();
+    	filterBoiler.start();
     }
     public void filterImage(){
     	new Thread(()->{
@@ -99,7 +97,7 @@ public class Vision extends Subsystem {
     			//		iterator.remove();
     					
     				//}
-    				TARGET = rec;
+    				GEAR_TARGET = rec;
     				SmartDashboard.putInt("Contours", contours.size());
     				SmartDashboard.putInt("Width", rec.width);
     			}			

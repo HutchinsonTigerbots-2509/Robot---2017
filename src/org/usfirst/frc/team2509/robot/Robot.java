@@ -39,43 +39,39 @@ public class Robot extends IterativeRobot {
     	opDrive,
     	shoot,
     	sweepForward;
-    public static OI oi;
-    public static Vision vision;
-    public static DriveTrain driveTrain;
-    public static Sweeper sweeper;
-    public static Shooter shooter;
-    public static Climb climb;
     public Joystick 
     	OpStick,
     	CoopStick;
+    public static OI oi;
+    public static Climb climb;
+    public static DriveTrain driveTrain;
+    public static Shooter shooter;
+    public static Sweeper sweeper;
+    public static Vision vision;
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
     	RobotMap.init();
-        vision = new Vision();
-        driveTrain = new DriveTrain();
-        sweeper = new Sweeper();
-        shooter = new Shooter();
         climb = new Climb();
-       
-        
+        driveTrain = new DriveTrain();
+        shooter = new Shooter();
+        sweeper = new Sweeper();
+        vision = new Vision();
+        vision.initDefaultCommand();
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
         // constructed yet. Thus, their requires() statements may grab null
         // pointers. Bad news. Don't move it.
         oi = new OI();
         // instantiate the command used for the autonomous period
-        
         autonomousCommand = new AutonomousCommand();
         filterGearTarget = new FilterGearTarget();
-        sweepForward = new SweeperForward();
         gyroTurn = new GyroTurn();
         opDrive = new OpDrive();
-        OpStick = oi.OPSTICK;
-        vision.initDefaultCommand();
-       // SmartDashboard.putInt("WIDTH", vision.TARGET.width);
+        sweepForward = new SweeperForward();
     }
 
     /**
@@ -83,7 +79,6 @@ public class Robot extends IterativeRobot {
      * You can use it to reset subsystems before shutting down.
      */
     public void disabledInit(){
-
     }
 
     public void disabledPeriodic() {
@@ -92,10 +87,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         // schedule the autonomous command (example)
-       
     	if (autonomousCommand != null) autonomousCommand.start();
-       
-
     }
 
     /**
@@ -111,9 +103,7 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        if (autonomousCommand != null) autonomousCommand.isCanceled();
-        
-        
+  //      if (autonomousCommand != null) autonomousCommand.isCanceled();
         if(isEnabled()&&isOperatorControl()) opDrive.start();
     }
 
@@ -122,8 +112,6 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
     	Scheduler.getInstance().run();
-  //  	RobotMap.DRIVETRAIN.mecanumDrive_Cartesian(oi.getScaledX(), oi.getScaledY(), oi.getScaledZ(), 0);
-
       //  SmartDashboard.putDouble("Encoder", RobotMap.SHOOT_MOTOR.getEncVelocity());
         SmartDashboard.putInt("POV", OpStick.getPOV());
         SmartDashboard.putDouble("GYRO ANGLE" , RobotMap.DT_GYRO.getAngle());
