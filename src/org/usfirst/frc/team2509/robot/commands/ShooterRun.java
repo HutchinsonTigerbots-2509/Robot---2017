@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2509.robot.commands;
 
 import org.usfirst.frc.team2509.robot.Robot;
+import org.usfirst.frc.team2509.robot.RobotMap;
 
 import com.ctre.CANTalon;
 
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ShooterRun extends Command {
 	private final CANTalon MOTOR = Robot.shooter.SHOOT;
 	private final Talon KICKER = Robot.shooter.KICKER;
+	private final Talon GATE = RobotMap.GATE;
     public ShooterRun() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -21,7 +23,11 @@ public class ShooterRun extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	MOTOR.set(0.9);
+    	MOTOR.set(0.95);
+    	Timer.delay(0.5);
+    	GATE.set(0.15);
+    	Timer.delay(0.25);
+    	GATE.set(0);
     	Timer.delay(0.5);
     	KICKER.set(0.9);
     }
@@ -39,6 +45,9 @@ public class ShooterRun extends Command {
     protected void end() {
     	MOTOR.set(0.0);
     	KICKER.set(0.0);
+    	GATE.set(-0.15);
+    	Timer.delay(0.25);
+    	GATE.set(0.0);
     }
 
     // Called when another command which requires one or more of the same

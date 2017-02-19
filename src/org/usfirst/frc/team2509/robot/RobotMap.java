@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class RobotMap {
     public static CANTalon CLIMB_MOTOR;
-    public static Talon CLIMB_ALT;
+    public static CANTalon CLIMB_ALT;
     public static CANTalon DT_LEFTFRONT;
     public static CANTalon DT_RIGHTFRONT;
     public static CANTalon DT_LEFTREAR;
@@ -34,14 +34,19 @@ public class RobotMap {
     public static CANTalon SHOOT_MOTOR;
     public static Encoder SHOOT_ENCODER;
     public static Talon SHOOT_KICKER;
+    public static Talon GATE;
     
     public static Talon SWEEP_MOTOR;
 
     public static void init() {
     	CLIMB_MOTOR = new CANTalon(5);
         LiveWindow.addActuator("Climb", "Motor", CLIMB_MOTOR);
-        CLIMB_ALT = new Talon(2);
-
+        CLIMB_ALT = new CANTalon(7);
+        
+        GATE = new Talon(2);
+      //  GATE.setInverted(true);
+        LiveWindow.addActuator("Gate", "Gate", GATE);
+        
         DT_LEFTFRONT = new CANTalon(0);
         LiveWindow.addActuator("DriveTrain", "DT_LEFTFRONT", DT_LEFTFRONT);
         
@@ -68,7 +73,7 @@ public class RobotMap {
         DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
             
         GEAR_CAM = CameraServer.getInstance().startAutomaticCapture("GEAR", 0);
-        GEAR_CAM.setBrightness(30);
+        GEAR_CAM.setBrightness(0);
         
         SHOOT_CAM = CameraServer.getInstance().startAutomaticCapture("SHOOTER", 1);
         SHOOT_CAM.setBrightness(30);

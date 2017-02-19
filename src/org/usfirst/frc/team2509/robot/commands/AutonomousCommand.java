@@ -77,6 +77,7 @@ protected final Scalar
     	new Thread(()->{
     		while(true){
     			contours.clear();
+    			RobotMap.GEAR_CAM.setBrightness(0);
     			CVSINK.grabFrame(SOURCE);
     		//	CVSINK.grabFrameNoTimeout(SOURCE);
     			Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2RGB);
@@ -94,7 +95,7 @@ protected final Scalar
     			for(Iterator<MatOfPoint> iterator = contours.iterator();iterator.hasNext();){
     				MatOfPoint matOfPoint = (MatOfPoint) iterator.next();
     				Rect rec = Imgproc.boundingRect(matOfPoint);
-    				if( rec.height < 10 || rec.width < 5){
+    				if( rec.height < 25 || rec.width < 10){
     					iterator.remove();
     				continue;
     				}
@@ -105,14 +106,13 @@ protected final Scalar
     				//}
     				TARGET = rec;
     				SmartDashboard.putInt("Contours", contours.size());
+    				SmartDashboard.putInt("X", rec.x);
     				SmartDashboard.putInt("Width", rec.width);
     			}			
     			if(contours.size()==3){
     				Rect rec = Imgproc.boundingRect(contours.get(0));
     				Point center = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0);
     				Point centerw = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0 - 20);
-    				SmartDashboard.putString("Bottom Right:", ""+(Point)rec.br());
-    				SmartDashboard.putString("Top Left", ""+(Point)rec.tl());
     				Imgproc.putText(SOURCE, ""+(Point)rec.br(), center, Core.FONT_HERSHEY_PLAIN, 1, BLACK);
     				Imgproc.putText(SOURCE, ""+(Point)rec.tl(), centerw, Core.FONT_HERSHEY_PLAIN, 1, BLACK);
     			}
@@ -120,28 +120,30 @@ protected final Scalar
     			}
     	}).start();
     		DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
-    		Timer.delay(1.35);
+    		Timer.delay(1.3);
     		DT.drive(0,0);
-    		Timer.delay(2);
-    		while(TARGET.width<35){
-    			if(TARGET.x<113){
-    				DT.mecanumDrive_Cartesian(0.6, 0, 0, GYRO.getAngle());
+    		Timer.delay(1.5);
+    		while(TARGET.width<45){
+    			while(TARGET.x<65){
+    				DT.mecanumDrive_Cartesian(0.3, 0, 0, GYRO.getAngle());
     				Timer.delay(0.05);
     				DT.mecanumDrive_Cartesian(0, 0, 0, GYRO.getAngle());
-    			}else if(TARGET.x>117){
-    				DT.mecanumDrive_Cartesian(-0.6,0, 0, GYRO.getAngle());
+    			}while(TARGET.x>75){
+    				DT.mecanumDrive_Cartesian(-0.3,0, 0, GYRO.getAngle());
     				Timer.delay(0.05);
     				DT.mecanumDrive_Cartesian(0, 0, 0, GYRO.getAngle());
-    			}else if(TARGET.x>113&&TARGET.x<117){
-    			DT.mecanumDrive_Cartesian(0, 0.5, 0, GYRO.getAngle());	
+    			}if(TARGET.x>65&&TARGET.x<75){
+    				DT.mecanumDrive_Cartesian(0, 0.4, 0, GYRO.getAngle());	
+    				Timer.delay(0.2);
+    				DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
     			}
     		}
     		DT.drive(0,0);
-    		Timer.delay(3);
-    		DT.mecanumDrive_Cartesian(-0.5, 0, 0, GYRO.getAngle());
-    		if(TARGET.width<15){
+    		Timer.delay(5);
+    		DT.mecanumDrive_Cartesian(0, -0.7, 0, GYRO.getAngle());
+    		Timer.delay(0.5);
     			DT.drive(0, 0);
-    		}
+    		
     }
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
