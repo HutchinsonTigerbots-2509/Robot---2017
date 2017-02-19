@@ -4,7 +4,7 @@
 package org.usfirst.frc.team2509.robot;
 
 import org.usfirst.frc.team2509.robot.commands.AutonomousCommand;
-import org.usfirst.frc.team2509.robot.commands.FilterTargets;
+import org.usfirst.frc.team2509.robot.commands.FilterGearTarget;
 import org.usfirst.frc.team2509.robot.commands.GyroTurn;
 import org.usfirst.frc.team2509.robot.commands.OpDrive;
 import org.usfirst.frc.team2509.robot.commands.SweeperForward;
@@ -32,9 +32,12 @@ public class Robot extends IterativeRobot {
 
     public Command 
     	autonomousCommand,
-    	filterTarget,
+    	climbUp,
+    	dropGear,
+    	filterGearTarget,
     	gyroTurn,
     	opDrive,
+    	shoot,
     	sweepForward;
     public static OI oi;
     public static Vision vision;
@@ -42,7 +45,9 @@ public class Robot extends IterativeRobot {
     public static Sweeper sweeper;
     public static Shooter shooter;
     public static Climb climb;
-    public Joystick OpStick;
+    public Joystick 
+    	OpStick,
+    	CoopStick;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -64,12 +69,11 @@ public class Robot extends IterativeRobot {
         // instantiate the command used for the autonomous period
         
         autonomousCommand = new AutonomousCommand();
-        filterTarget = new FilterTargets();
+        filterGearTarget = new FilterGearTarget();
         sweepForward = new SweeperForward();
         gyroTurn = new GyroTurn();
         opDrive = new OpDrive();
         OpStick = oi.OPSTICK;
-        Robot.vision.filterImage();
         vision.initDefaultCommand();
        // SmartDashboard.putInt("WIDTH", vision.TARGET.width);
     }

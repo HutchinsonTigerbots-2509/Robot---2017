@@ -3,7 +3,7 @@ package org.usfirst.frc.team2509.robot;
 
 import org.usfirst.frc.team2509.robot.commands.AutonomousCommand;
 import org.usfirst.frc.team2509.robot.commands.ClimbUp;
-import org.usfirst.frc.team2509.robot.commands.FilterTargets;
+import org.usfirst.frc.team2509.robot.commands.FilterGearTarget;
 import org.usfirst.frc.team2509.robot.commands.OpDrive;
 import org.usfirst.frc.team2509.robot.commands.ShooterRun;
 import org.usfirst.frc.team2509.robot.commands.SweeperForward;
@@ -41,7 +41,7 @@ public class OI {
         SmartDashboard.putData("Shooter Start", new ShooterRun());
         SmartDashboard.putData("ReverseSweep", new SweeperReverse());
         SmartDashboard.putData("Forward Sweep", new SweeperForward());
-        SmartDashboard.putData("Filter", new FilterTargets());
+        SmartDashboard.putData("Filter", new FilterGearTarget());
         // Joystick Buttons
         CLIMB = new JoystickButton(OPSTICK, 2);
         CLIMB.whileHeld(new ClimbUp());

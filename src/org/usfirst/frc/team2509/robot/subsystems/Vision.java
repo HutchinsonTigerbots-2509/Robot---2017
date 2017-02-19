@@ -21,7 +21,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.usfirst.frc.team2509.robot.commands.FilterTargets;
+import org.usfirst.frc.team2509.robot.commands.FilterGearTarget;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
@@ -38,7 +38,7 @@ public class Vision extends Subsystem {
 	private int 
 		CENTER[],
 		WIDTH[];
-	public Command filterTargets = new FilterTargets();
+	public Command filterGear = new FilterGearTarget();
 	public Rect TARGET;
 	private ArrayList<MatOfPoint>
 		contours = new ArrayList<MatOfPoint>();
@@ -67,7 +67,7 @@ public class Vision extends Subsystem {
 		UPPER_BOUNDS = new Scalar(200,210,60);
 	
     public void initDefaultCommand() {
-    	filterTargets.start();
+    	filterGear.start();
     }
     public void filterImage(){
     	new Thread(()->{
