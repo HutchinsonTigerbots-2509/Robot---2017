@@ -63,13 +63,13 @@ public class OI {
     	return COOPSTICK;
     }
     public double getScaledX(){
-		return (OPSTICK.getX()*((OPSTICK.getRawAxis(3)+1.5)*0.4));
+		return (OPSTICK.getX()*((OPSTICK.getRawAxis(3)+3)*0.25));
 	}
 	public double getScaledY(){
-		return (OPSTICK.getY()*((OPSTICK.getRawAxis(3)+1.5)*0.4));
+		return (OPSTICK.getY()*((OPSTICK.getRawAxis(3)+3)*0.25));
 	}
 	public double getScaledZ(){
-		return (OPSTICK.getZ()*((OPSTICK.getRawAxis(3)+1)*0.5));
+		return (OPSTICK.getZ()*((OPSTICK.getRawAxis(3)+3)*0.25));
 	}
 	public Command getAutonomous(String autoChoice){
 		return new AutonomousCommand();

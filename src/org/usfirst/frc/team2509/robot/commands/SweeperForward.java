@@ -19,7 +19,7 @@ public class SweeperForward extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	MOTOR.set(0.8);
+    	MOTOR.set(0.9);
     }
     
 

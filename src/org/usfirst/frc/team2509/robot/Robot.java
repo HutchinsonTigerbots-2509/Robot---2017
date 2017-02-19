@@ -111,7 +111,6 @@ public class Robot extends IterativeRobot {
         
         
         if(isEnabled()&&isOperatorControl()) opDrive.start();
-        if(isEnabled()&&isOperatorControl()) gyroTurn.start();
     }
 
     /**
