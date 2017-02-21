@@ -125,18 +125,19 @@ public class Red3 extends Command {
 	    				DT.mecanumDrive_Cartesian(-0.3,0, 0, 0);
 	    				Timer.delay(0.05);
 	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
-	    			}else if(TARGET.x>65&&TARGET.x<75){
+	    			}else if(TARGET.x>=65&&TARGET.x<=75){
 	    				DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);	
 	    				Timer.delay(0.25);
 	    				DT.mecanumDrive_Cartesian(0, 0.0, 0, 0);
 	    				Timer.delay(0.25);
-	    			}else if(SWITCH.get()==true){
-	    		    	DT.mecanumDrive_Cartesian(0, -0.7, 0, 0);
-	    		    	Timer.delay(0.5);
-	    		     	DT.drive(0, 0);
-	    		   	}
-    			
+	    			}
+	    			if(SWITCH.get()){
+	    	    		DT.mecanumDrive_Cartesian(0, -0.7, 0, 0);
+	    	        	Timer.delay(0.5);
+	    	       		DT.drive(0, 0);
+	    	    	}    
     		}
+	    	Timer.delay(0.25);
 	    	if(SWITCH.get()){
 	    		DT.mecanumDrive_Cartesian(0, -0.7, 0, 0);
 	        	Timer.delay(0.5);
