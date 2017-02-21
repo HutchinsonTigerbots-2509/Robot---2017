@@ -9,6 +9,7 @@ import com.ctre.CANTalon.FeedbackDevice;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * floating around.
  */
 public class RobotMap {
+	
     public static CANTalon CLIMB_MOTOR;
     public static CANTalon CLIMB_ALT;
     public static CANTalon DT_LEFTFRONT;
@@ -30,21 +32,23 @@ public class RobotMap {
     public static AnalogGyro DT_GYRO;
     public static RobotDrive DRIVETRAIN;
     public static UsbCamera GEAR_CAM;
+    public static DigitalInput GEAR_SWITCH;
     public static UsbCamera SHOOT_CAM;
     public static CANTalon SHOOT_MOTOR;
     public static Encoder SHOOT_ENCODER;
     public static Talon SHOOT_KICKER;
     public static Talon GATE;
-    
-    public static Talon SWEEP_MOTOR;
+    public static CANTalon SWEEP_MOTOR;
 
     public static void init() {
-    	CLIMB_MOTOR = new CANTalon(5);
-        LiveWindow.addActuator("Climb", "Motor", CLIMB_MOTOR);
-        CLIMB_ALT = new CANTalon(7);
+    	CLIMB_MOTOR = new CANTalon(4);
+    	CLIMB_MOTOR.setInverted(true);
+    	LiveWindow.addActuator("Climb", "Motor", CLIMB_MOTOR);
+ //       CLIMB_ALT = new CANTalon(7);
+ //       CLIMB_ALT.setInverted(true);
         
-        GATE = new Talon(2);
-      //  GATE.setInverted(true);
+        GATE = new Talon(0);
+        GATE.setInverted(true);
         LiveWindow.addActuator("Gate", "Gate", GATE);
         
         DT_LEFTFRONT = new CANTalon(0);
@@ -75,14 +79,17 @@ public class RobotMap {
         GEAR_CAM = CameraServer.getInstance().startAutomaticCapture("GEAR", 0);
         GEAR_CAM.setBrightness(0);
         
-        SHOOT_CAM = CameraServer.getInstance().startAutomaticCapture("SHOOTER", 1);
-        SHOOT_CAM.setBrightness(30);
+        GEAR_SWITCH = new DigitalInput(0);
+        LiveWindow.addSensor("GEAR SWITCH", 0, GEAR_SWITCH);
         
-        SHOOT_KICKER = new Talon(0);
-        SHOOT_KICKER.setInverted(true);
+        SHOOT_CAM = CameraServer.getInstance().startAutomaticCapture("SHOOTER", 1);
+        SHOOT_CAM.setBrightness(0);
+        
+        SHOOT_KICKER = new Talon(1);
+      //  SHOOT_KICKER.setInverted(true);
         LiveWindow.addActuator("Shooter", "Kicker", SHOOT_KICKER);
         
-        SHOOT_MOTOR = new CANTalon(8);
+        SHOOT_MOTOR = new CANTalon(6);
         SHOOT_MOTOR.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         SHOOT_MOTOR.reverseSensor(false);
         SHOOT_MOTOR.configNominalOutputVoltage(+0.0f, -0.0f);
@@ -94,8 +101,8 @@ public class RobotMap {
         //SHOOT_MOTOR.setD();
         LiveWindow.addActuator("Shooter", "Motor", (CANTalon) SHOOT_MOTOR);
                 
-        SWEEP_MOTOR = new Talon(1);
-        LiveWindow.addActuator("Sweeper", "Motor", (Talon) SWEEP_MOTOR);
+        SWEEP_MOTOR = new CANTalon(5);
+        LiveWindow.addActuator("Sweeper", "Motor", (CANTalon) SWEEP_MOTOR);
         
     }
 }

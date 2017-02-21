@@ -25,11 +25,11 @@ public class ShooterRun extends Command {
     protected void initialize() {
     	MOTOR.set(0.95);
     	Timer.delay(0.5);
-    	GATE.set(0.15);
+    	GATE.set(0.3);
     	Timer.delay(0.25);
     	GATE.set(0);
     	Timer.delay(0.5);
-    	KICKER.set(0.9);
+    	KICKER.set(1);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -45,7 +45,7 @@ public class ShooterRun extends Command {
     protected void end() {
     	MOTOR.set(0.0);
     	KICKER.set(0.0);
-    	GATE.set(-0.15);
+    	GATE.set(-0.3);
     	Timer.delay(0.25);
     	GATE.set(0.0);
     }

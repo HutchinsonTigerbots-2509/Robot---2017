@@ -3,10 +3,10 @@
 
 package org.usfirst.frc.team2509.robot;
 
-import org.usfirst.frc.team2509.robot.commands.AutonomousCommand;
 import org.usfirst.frc.team2509.robot.commands.FilterGearTarget;
 import org.usfirst.frc.team2509.robot.commands.GyroTurn;
 import org.usfirst.frc.team2509.robot.commands.OpDrive;
+import org.usfirst.frc.team2509.robot.commands.Red1;
 import org.usfirst.frc.team2509.robot.commands.SweeperForward;
 import org.usfirst.frc.team2509.robot.subsystems.Climb;
 import org.usfirst.frc.team2509.robot.subsystems.DriveTrain;
@@ -37,6 +37,9 @@ public class Robot extends IterativeRobot {
     	filterGearTarget,
     	gyroTurn,
     	opDrive,
+    	red1,
+    	red2,
+    	red3,
     	shoot,
     	sweepForward;
     public Joystick 
@@ -48,6 +51,7 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Sweeper sweeper;
     public static Vision vision;
+    String autoCommand,RED1,RED2,RED3;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -66,12 +70,14 @@ public class Robot extends IterativeRobot {
         // constructed yet. Thus, their requires() statements may grab null
         // pointers. Bad news. Don't move it.
         oi = new OI();
-        // instantiate the command used for the autonomous period
-        autonomousCommand = new AutonomousCommand();
+        // instantiate the command used for the autonomous perio
         filterGearTarget = new FilterGearTarget();
         gyroTurn = new GyroTurn();
         opDrive = new OpDrive();
+        red1 = new Red1();
         sweepForward = new SweeperForward();
+
+    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
     }
 
     /**
@@ -86,6 +92,9 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit() {
+    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
+    	autoCommand = oi.chooser.getSelected();
+    	autonomousCommand = oi.getAutonomous(autoCommand);
         // schedule the autonomous command (example)
     	if (autonomousCommand != null) autonomousCommand.start();
     }
@@ -94,7 +103,9 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
         Scheduler.getInstance().run();
+        
 		
     }
 
@@ -113,8 +124,9 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
     	Scheduler.getInstance().run();
       //  SmartDashboard.putDouble("Encoder", RobotMap.SHOOT_MOTOR.getEncVelocity());
-        SmartDashboard.putInt("POV", OpStick.getPOV());
+ //       SmartDashboard.putInt("POV", OpStick.getPOV());
         SmartDashboard.putDouble("GYRO ANGLE" , RobotMap.DT_GYRO.getAngle());
+    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
         
     }
 

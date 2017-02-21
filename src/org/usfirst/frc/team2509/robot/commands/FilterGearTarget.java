@@ -46,7 +46,6 @@ public class FilterGearTarget extends Command {
 		//Thresholds values
 		LOWER_BOUNDS = new Scalar(180,190,40),
 		UPPER_BOUNDS = new Scalar(200,210,60);
-	private Rect TARGET = Robot.vision.GEAR_TARGET;
 
     // Called just before this Command runs the first time
     protected void initialize() {

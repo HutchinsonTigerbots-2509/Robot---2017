@@ -1,10 +1,16 @@
 package org.usfirst.frc.team2509.robot;
 
 
-import org.usfirst.frc.team2509.robot.commands.AutonomousCommand;
+import org.usfirst.frc.team2509.robot.commands.Blue1;
+import org.usfirst.frc.team2509.robot.commands.Blue2;
+import org.usfirst.frc.team2509.robot.commands.Blue3;
 import org.usfirst.frc.team2509.robot.commands.ClimbUp;
+import org.usfirst.frc.team2509.robot.commands.DropGear;
 import org.usfirst.frc.team2509.robot.commands.FilterGearTarget;
 import org.usfirst.frc.team2509.robot.commands.OpDrive;
+import org.usfirst.frc.team2509.robot.commands.Red1;
+import org.usfirst.frc.team2509.robot.commands.Red2;
+import org.usfirst.frc.team2509.robot.commands.Red3;
 import org.usfirst.frc.team2509.robot.commands.ShooterRun;
 import org.usfirst.frc.team2509.robot.commands.SweeperForward;
 import org.usfirst.frc.team2509.robot.commands.SweeperReverse;
@@ -24,13 +30,20 @@ public class OI {
 	public Joystick OPSTICK;
     public Joystick COOPSTICK;
     public JoystickButton CLIMB;
+    public JoystickButton DROP_GEAR;
     public JoystickButton FORWARD_SWEEP;
     public JoystickButton REVERSE_SWEEP;
     public JoystickButton SHOOT;
     public String defaultAuto = "Default";
-	public String customAuto = "My Auto";
+	public String RED1 = "Red 1";
+	public String RED2  = "Red 2";
+	public String RED3 = "Red 3";
+	public String BLUE1 = "Blue 1";
+	public String BLUE2 = "Blue 2";
+	public String BLUE3 = "Blue 3";
 	public String autoSelected;
 	public SendableChooser<String> chooser = new SendableChooser<>();
+	private Command autoCommand;
 
 	public OI() {
         OPSTICK = new Joystick(0);
@@ -42,6 +55,7 @@ public class OI {
         SmartDashboard.putData("ReverseSweep", new SweeperReverse());
         SmartDashboard.putData("Forward Sweep", new SweeperForward());
         SmartDashboard.putData("Filter", new FilterGearTarget());
+        SmartDashboard.putData("Drop Gear", new DropGear());
         // Joystick Buttons
         CLIMB = new JoystickButton(OPSTICK, 2);
         CLIMB.whileHeld(new ClimbUp());
@@ -51,9 +65,16 @@ public class OI {
         FORWARD_SWEEP.whileHeld(new SweeperForward());
         REVERSE_SWEEP = new JoystickButton(COOPSTICK, 5);
         REVERSE_SWEEP.whileHeld(new SweeperReverse());
+        DROP_GEAR = new JoystickButton(OPSTICK,3);
+        DROP_GEAR.whenPressed(new DropGear());
         //Autonomous Chooser
         chooser.addDefault("Default Auto", defaultAuto);
-		chooser.addObject("My Auto", customAuto);
+		chooser.addObject("Red 1", RED1);
+		chooser.addObject("Red 2", RED2);
+		chooser.addObject("Red 3", RED3);
+		chooser.addObject("Blue 1", BLUE1);
+		chooser.addObject("Blue 2", BLUE2);
+		chooser.addObject("Blue 3", BLUE3);
 		SmartDashboard.putData("Auto choices", chooser);
 	}
     public Joystick getOpStick() {
@@ -72,7 +93,27 @@ public class OI {
 		return (OPSTICK.getZ()*((OPSTICK.getRawAxis(3)+3)*0.25));
 	}
 	public Command getAutonomous(String autoChoice){
-		return new AutonomousCommand();
+		switch(autoChoice){
+    	case "Red 1":
+    		 autoCommand = new Red1();
+    		 break;
+    	case "Red 2":
+    		autoCommand = new Red2();
+    		break;
+    	case "Red 3":
+    		autoCommand = new Red3();
+    		break;
+    	case "Blue 1":
+   		 	autoCommand = new Blue1();
+   		 	break;
+    	case "Blue 2":
+    		autoCommand = new Blue2();
+   			break;
+    	case "Blue 3":
+    		autoCommand = new Blue3();
+    		break;
+    	}
+		return autoCommand;
 	}
 }
 

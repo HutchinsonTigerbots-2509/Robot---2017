@@ -5,14 +5,15 @@ package org.usfirst.frc.team2509.robot.commands;
 
 import org.usfirst.frc.team2509.robot.Robot;
 
-import edu.wpi.first.wpilibj.Talon;
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *@author Nate
  */
 public class SweeperForward extends Command {
-	private final Talon MOTOR = Robot.sweeper.MOTOR;
+	private final CANTalon MOTOR = Robot.sweeper.MOTOR;
     public SweeperForward() {
         requires(Robot.sweeper);
     }

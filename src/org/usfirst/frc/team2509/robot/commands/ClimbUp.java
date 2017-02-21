@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ClimbUp extends Command {
 	private CANTalon motor = RobotMap.CLIMB_MOTOR;
-	private CANTalon altmotor = RobotMap.CLIMB_ALT;
     public ClimbUp() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -28,7 +27,6 @@ public class ClimbUp extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	motor.set(1.0);
-    	altmotor.set(1.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -39,7 +37,6 @@ public class ClimbUp extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	motor.set(0);
-    	altmotor.set(0.0);
     }
 
     // Called when another command which requires one or more of the same

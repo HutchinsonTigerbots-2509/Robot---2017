@@ -5,15 +5,15 @@ package org.usfirst.frc.team2509.robot.commands;
 
 import org.usfirst.frc.team2509.robot.Robot;
 
-import edu.wpi.first.wpilibj.Talon;
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *@author Nate
  */
 public class SweeperReverse extends Command {
-	private final Talon MOTOR = Robot.sweeper.MOTOR;
-	private final Command Forward = new SweeperForward();
+	private final CANTalon MOTOR = Robot.sweeper.MOTOR;
     public SweeperReverse() {
     	requires(Robot.sweeper);
     }
@@ -35,7 +35,6 @@ public class SweeperReverse extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	MOTOR.set(0);
-    	Forward.start();
     }
 
     // Called when another command which requires one or more of the same

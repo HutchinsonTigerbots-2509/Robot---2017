@@ -62,7 +62,7 @@ protected final Scalar
 	UPPER_BOUNDS = new Scalar(200,210,60);
 	private final RobotDrive DT = RobotMap.DRIVETRAIN;
 	private final AnalogGyro GYRO = RobotMap.DT_GYRO;
-	private Rect TARGET = Robot.vision.TARGET;
+	private Rect TARGET;
     public AutonomousCommand() {
     	requires(Robot.driveTrain);
     }
@@ -117,7 +117,7 @@ protected final Scalar
     		DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
     		Timer.delay(1.3);
     		DT.drive(0,0);
-    		Timer.delay(1.5);
+    		Timer.delay(0.75);
     		while(TARGET.width<45){
     			while(TARGET.x<65){
     				DT.mecanumDrive_Cartesian(0.3, 0, 0, GYRO.getAngle());
@@ -137,8 +137,12 @@ protected final Scalar
     		Timer.delay(5);
     		DT.mecanumDrive_Cartesian(0, -0.7, 0, GYRO.getAngle());
     		Timer.delay(0.5);
-    			DT.drive(0, 0);
-    		
+    		DT.drive(0, 0);
+    		while(GYRO.getAngle()>(-60)) DT.mecanumDrive_Cartesian(0, 0, -0.5, GYRO.getAngle());
+    		if(GYRO.getAngle()<(-60)) DT.drive(0, 0);
+    		DT.mecanumDrive_Cartesian(0, -0.5, 0, GYRO.getAngle());
+    		Timer.delay(1.0);
+    		DT.drive(0, 0);
     }
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
