@@ -116,10 +116,12 @@ protected final Scalar
     			OUTPUT_STREAM.putFrame(SOURCE);
     			}
     	}).start();
-    		DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
+//Robot positions self
+    	DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
     		Timer.delay(1.4);
     		DT.drive(0,0);
     		Timer.delay(0.75);
+//Robot recognizes and centers pn target    		
     		while(TARGET.width<55){
     			while(TARGET.x<65){
     				DT.mecanumDrive_Cartesian(0.3, 0, 0, GYRO.getAngle());
@@ -135,10 +137,12 @@ protected final Scalar
     				DT.mecanumDrive_Cartesian(0, 0.0, 0, 0);
     			}
     		}
+//Robot pulls back    		
     		Timer.delay(2);
     		DT.mecanumDrive_Cartesian(0, -0.7, 0, 0);
     		Timer.delay(0.5);
     		DT.drive(0, 0);
+//Robot positions itself to shoot (60 dungerees)    		
     		while(GYRO.getAngle()<(60)) DT.mecanumDrive_Cartesian(0, 0, 0.5, 0);
     		if(GYRO.getAngle()>(60)) DT.drive(0, 0);
     		DT.mecanumDrive_Cartesian(0, -0.5, 0, 0);

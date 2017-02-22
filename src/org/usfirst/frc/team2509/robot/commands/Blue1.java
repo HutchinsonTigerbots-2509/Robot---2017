@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -60,6 +61,7 @@ public class Blue1 extends Command {
 
 	    // Called just before this Command runs the first time 
 	    protected void initialize() {
+	    	//This Thread is vision DONT change
 	    	new Thread(()->{
 	    		while(true){
 	    			contours.clear();
@@ -105,10 +107,51 @@ public class Blue1 extends Command {
 	    			OUTPUT_STREAM.putFrame(SOURCE);
 	    			}
 	    	}).start();
-    }
-
-    // Called repeatedly when this Command is scheduled to run
+	    	//Drive Forward at 75% for 1.15 Seconds
+	    	DT.mecanumDrive_Cartesian(0, 0.75, 0, 0);
+	    	Timer.delay(1.15);
+	    	DT.drive(0, 0);
+	    	//Turn the robot until Gyro reads -52 degrees
+	    	while(GYRO.getAngle()>(-52)) DT.mecanumDrive_Cartesian(0, 0, -0.4, 0);
+	    	if(GYRO.getAngle()<(-52)) DT.drive(0, 0);
+	    	//Drive forward at 50% for 0.6 seconds
+	    	DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
+	    	Timer.delay(.6);
+	    	DT.drive(0, 0);
+	    	Timer.delay(0.9);
+	    	//Robot cetners self on target.
+	    	while(SWITCH.get()==false&&TARGET.width<55){
+	    	    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
+	    			if(TARGET.x<65){
+	    				DT.mecanumDrive_Cartesian(0.3, 0, 0, 0);
+	    				Timer.delay(0.05);
+	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
+	    			}else if(TARGET.x>75){
+	    				DT.mecanumDrive_Cartesian(-0.3,0, 0, 0);
+	    				Timer.delay(0.05);
+	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
+	    			}else if(TARGET.x>=65&&TARGET.x<=75){
+	    				DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);	
+	    				Timer.delay(0.25);
+	    				DT.mecanumDrive_Cartesian(0, 0.0, 0, 0);
+	    				Timer.delay(0.25);
+	    			}
+	    			if(SWITCH.get()){
+	    	    		DT.mecanumDrive_Cartesian(0, -0.7, 0, 0);
+	    	        	Timer.delay(0.5);
+	    	       		DT.drive(0, 0);
+	    	    	}    
+    		}
+	    	//Robot pulls back
+	    	Timer.delay(0.25);
+	    	if(SWITCH.get()){
+	    		DT.mecanumDrive_Cartesian(0, -0.7, 0, 0);
+	        	Timer.delay(0.5);
+	       		DT.drive(0, 0);
+	    	}    		
+	    }
     protected void execute() {
+    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -118,6 +161,7 @@ public class Blue1 extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	
     }
 
     // Called when another command which requires one or more of the same

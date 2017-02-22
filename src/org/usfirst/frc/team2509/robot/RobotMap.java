@@ -44,8 +44,8 @@ public class RobotMap {
     	CLIMB_MOTOR = new CANTalon(4);
     	CLIMB_MOTOR.setInverted(true);
     	LiveWindow.addActuator("Climb", "Motor", CLIMB_MOTOR);
- //       CLIMB_ALT = new CANTalon(7);
- //       CLIMB_ALT.setInverted(true);
+        CLIMB_ALT = new CANTalon(7);
+        CLIMB_ALT.setInverted(true);
         
         GATE = new Talon(0);
         GATE.setInverted(true);
