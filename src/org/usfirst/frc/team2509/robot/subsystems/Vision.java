@@ -21,6 +21,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team2509.robot.RobotMap;
 import org.usfirst.frc.team2509.robot.commands.FilterBoilerTarget;
 import org.usfirst.frc.team2509.robot.commands.FilterGearTarget;
 
@@ -71,6 +72,7 @@ public class Vision extends Subsystem {
     	new Thread(()->{
     		while(true){
     			contours.clear();
+    			RobotMap.GEAR_CAM.setBrightness(0);
     			CVSINK.grabFrame(SOURCE);
     		//	CVSINK.grabFrameNoTimeout(SOURCE);
     			Imgproc.cvtColor(SOURCE, HSV, Imgproc.COLOR_BGR2RGB);
@@ -88,7 +90,7 @@ public class Vision extends Subsystem {
     			for(Iterator<MatOfPoint> iterator = contours.iterator();iterator.hasNext();){
     				MatOfPoint matOfPoint = (MatOfPoint) iterator.next();
     				Rect rec = Imgproc.boundingRect(matOfPoint);
-    				if( rec.height < 10 || rec.width < 5){
+    				if( rec.height < 25 || rec.width < 10){
     					iterator.remove();
     				continue;
     				}
@@ -97,16 +99,14 @@ public class Vision extends Subsystem {
     			//		iterator.remove();
     					
     				//}
-    				GEAR_TARGET = rec;
     				SmartDashboard.putInt("Contours", contours.size());
+    				SmartDashboard.putInt("X", rec.x);
     				SmartDashboard.putInt("Width", rec.width);
     			}			
     			if(contours.size()==3){
     				Rect rec = Imgproc.boundingRect(contours.get(0));
     				Point center = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0);
     				Point centerw = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0 - 20);
-    				SmartDashboard.putString("Bottom Right:", ""+(Point)rec.br());
-    				SmartDashboard.putString("Top Left", ""+(Point)rec.tl());
     				Imgproc.putText(SOURCE, ""+(Point)rec.br(), center, Core.FONT_HERSHEY_PLAIN, 1, BLACK);
     				Imgproc.putText(SOURCE, ""+(Point)rec.tl(), centerw, Core.FONT_HERSHEY_PLAIN, 1, BLACK);
     			}
