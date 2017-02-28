@@ -3,8 +3,10 @@ package org.usfirst.frc.team2509.robot.commands;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -24,7 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class Blue1 extends Command {
+public class TestAuto extends Command {
 	public Command filterTargets = new FilterGearTarget();
 	private ArrayList<MatOfPoint>
 		contours = new ArrayList<MatOfPoint>();
@@ -53,7 +55,7 @@ public class Blue1 extends Command {
 		private final AnalogGyro GYRO = RobotMap.DT_GYRO;
 		private final DigitalInput SWITCH = RobotMap.GEAR_SWITCH;
 		private Rect TARGET;
-	    public Blue1() {
+	    public TestAuto() {
 	    	requires(Robot.driveTrain);
 	    }
 
@@ -94,19 +96,26 @@ public class Blue1 extends Command {
 	    				SmartDashboard.putInt("X", rec.x);
 	    				SmartDashboard.putInt("Width", rec.width);
 	    			}			
+	    			if(contours.size()==3){
+	    				Rect rec = Imgproc.boundingRect(contours.get(0));
+	    				Point center = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0);
+	    				Point centerw = new Point(rec.br().x-rec.width / 2.0 - 15,rec.br().y - rec.height / 2.0 - 20);
+	    				Imgproc.putText(SOURCE, ""+(Point)rec.br(), center, Core.FONT_HERSHEY_PLAIN, 1, BLACK);
+	    				Imgproc.putText(SOURCE, ""+(Point)rec.tl(), centerw, Core.FONT_HERSHEY_PLAIN, 1, BLACK);
+	    			}
 	    			OUTPUT_STREAM.putFrame(SOURCE);
 	    			}
 	    	}).start();
 	    	DT.mecanumDrive_Cartesian(0, 0.75, 0, 0);
-	    	Timer.delay(1.05);
+	    	Timer.delay(1.1);
 	    	DT.drive(0, 0);
-	    	while(GYRO.getAngle()<(55)) DT.mecanumDrive_Cartesian(0, 0, 0.4, 0);
-	    	if(GYRO.getAngle()>(55)) DT.drive(0, 0);
+	    	while(GYRO.getAngle()>(-42)) DT.mecanumDrive_Cartesian(0, 0, -0.4, 0);
+	    	if(GYRO.getAngle()<(-42)) DT.drive(0, 0);
 	    	DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);
-	    	Timer.delay(.7);
+	    	Timer.delay(.2);
 	    	DT.drive(0, 0);
 	    	Timer.delay(0.9);
-	    	while(SWITCH.get()==false&&TARGET.width<55&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+	    	while(/*SWITCH.get()==false&&*/TARGET.width<55&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
     	    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
     			if(TARGET.x<65){
     				DT.mecanumDrive_Cartesian(0.3, 0, 0, 0);
@@ -123,19 +132,18 @@ public class Blue1 extends Command {
     				Timer.delay(0.25);
     			}
 		}
-   /* 	DT.mecanumDrive_Cartesian(0, 0.2, 0, 0);
+    	DT.mecanumDrive_Cartesian(0, 0.2, 0, 0);
     	Timer.delay(0.5);
     	DT.drive(0, 0);
-    	Timer.delay(0.25);*/
-	    	while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
-	    		DT.drive(0,0);
-	    	}
-	    	if(SWITCH.get()&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
-	    		Timer.delay(0.1);
-	    		DT.mecanumDrive_Cartesian(0, -0.3, 0, 0);
-	    		Timer.delay(0.05);
-	    		DT.drive(0, 0);
-	    	}	
+    	while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    		DT.drive(0,0);
+    	}
+    	if(SWITCH.get()&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    		Timer.delay(0.1);
+    		DT.mecanumDrive_Cartesian(0, -0.3, 0, 0);
+    		Timer.delay(0.05);
+    		DT.drive(0, 0);
+    	}	
 	    }
 	    protected void execute() {
 	    	if(Robot.isTeleop) end();

@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -54,7 +55,7 @@ public class Blue3 extends Command {
 		private final AnalogGyro GYRO = RobotMap.DT_GYRO;
 		private final DigitalInput SWITCH = RobotMap.GEAR_SWITCH;
 		private Rect TARGET;
-	    public Blue3(){
+	    public Blue3() {
 	    	requires(Robot.driveTrain);
 	    }
 
@@ -105,23 +106,67 @@ public class Blue3 extends Command {
 	    			OUTPUT_STREAM.putFrame(SOURCE);
 	    			}
 	    	}).start();
-    }
+	    	DT.mecanumDrive_Cartesian(0, 0.75, 0, 0);
+	    	Timer.delay(1.1);
+	    	DT.drive(0, 0);
+	    	while(GYRO.getAngle()>(-42)) DT.mecanumDrive_Cartesian(0, 0, -0.4, 0);
+	    	if(GYRO.getAngle()<(-42)) DT.drive(0, 0);
+	    	DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);
+	    	Timer.delay(.2);
+	    	DT.drive(0, 0);
+	    	Timer.delay(0.9);
+	    	while(/*SWITCH.get()==false&&*/TARGET.width<55&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    	    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
+    			if(TARGET.x<65){
+    				DT.mecanumDrive_Cartesian(0.3, 0, 0, 0);
+    				Timer.delay(0.05);
+    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
+    			}else if(TARGET.x>75){
+    				DT.mecanumDrive_Cartesian(-0.3,0, 0, 0);
+    				Timer.delay(0.05);
+    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
+    			}else if(TARGET.x>=65&&TARGET.x<=75){
+    				DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);	
+    				Timer.delay(0.25);
+    				DT.mecanumDrive_Cartesian(0, 0.0, 0, 0);
+    				Timer.delay(0.25);
+    			}
+		}
+    	DT.mecanumDrive_Cartesian(0, 0.2, 0, 0);
+    	Timer.delay(0.5);
+    	DT.drive(0, 0);
+    	while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    		DT.drive(0,0);
+    	}
+    	if(SWITCH.get()&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    		Timer.delay(0.1);
+    		DT.mecanumDrive_Cartesian(0, -0.3, 0, 0);
+    		Timer.delay(0.05);
+    		DT.drive(0, 0);
+    	}	
+	    }
+	    protected void execute() {
+	    	if(Robot.isTeleop) end();
+	    }
+	    
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
+	    // Make this return true when this Command no longer needs to run execute()
+	    protected boolean isFinished() {
+	        if(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5){
+	        	return false;
+	        }else{
+	        	return true;
+	        }
+	    }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
+	    // Called once after isFinished returns true
+	    protected void end() {
+	    	DT.drive(0, 0);
+	    }
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
-}
+	    // Called when another command which requires one or more of the same
+	    // subsystems is scheduled to run
+	    protected void interrupted() {
+	    	end();
+	    }
+	}

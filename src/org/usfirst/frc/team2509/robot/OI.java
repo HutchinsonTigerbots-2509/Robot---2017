@@ -57,7 +57,7 @@ public class OI {
         SmartDashboard.putData("Filter", new FilterGearTarget());
         SmartDashboard.putData("Drop Gear", new DropGear());
         // Joystick Buttons
-        CLIMB = new JoystickButton(OPSTICK, 2);
+        CLIMB = new JoystickButton(COOPSTICK, 1);
         CLIMB.whileHeld(new ClimbUp());
         SHOOT = new JoystickButton(OPSTICK, 1);
         SHOOT.whileHeld(new ShooterRun());
@@ -65,8 +65,6 @@ public class OI {
         FORWARD_SWEEP.whileHeld(new SweeperForward());
         REVERSE_SWEEP = new JoystickButton(COOPSTICK, 5);
         REVERSE_SWEEP.whileHeld(new SweeperReverse());
-        DROP_GEAR = new JoystickButton(OPSTICK,3);
-        DROP_GEAR.whenPressed(new DropGear());
         //Autonomous Chooser
         chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("Red 1", RED1);

@@ -3,10 +3,15 @@
 
 package org.usfirst.frc.team2509.robot;
 
+import org.usfirst.frc.team2509.robot.commands.Blue1;
+import org.usfirst.frc.team2509.robot.commands.Blue2;
+import org.usfirst.frc.team2509.robot.commands.Blue3;
 import org.usfirst.frc.team2509.robot.commands.FilterGearTarget;
 import org.usfirst.frc.team2509.robot.commands.GyroTurn;
 import org.usfirst.frc.team2509.robot.commands.OpDrive;
 import org.usfirst.frc.team2509.robot.commands.Red1;
+import org.usfirst.frc.team2509.robot.commands.Red2;
+import org.usfirst.frc.team2509.robot.commands.Red3;
 import org.usfirst.frc.team2509.robot.commands.SweeperForward;
 import org.usfirst.frc.team2509.robot.subsystems.Climb;
 import org.usfirst.frc.team2509.robot.subsystems.DriveTrain;
@@ -35,13 +40,16 @@ public class Robot extends IterativeRobot {
     	climbUp,
     	dropGear,
     	filterGearTarget,
+    	sweepForward,
     	gyroTurn,
     	opDrive,
+    	blue1,
+    	blue2,
+    	blue3,
     	red1,
     	red2,
     	red3,
-    	shoot,
-    	sweepForward;
+    	shoot;
     public Joystick 
     	OpStick,
     	CoopStick;
@@ -51,7 +59,8 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Sweeper sweeper;
     public static Vision vision;
-    String autoCommand,RED1,RED2,RED3;
+    String autoCommand,RED1,RED2,RED3,BLUE1,BLUE2,BLUE3;
+    public static boolean isTeleop;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -75,6 +84,11 @@ public class Robot extends IterativeRobot {
         gyroTurn = new GyroTurn();
         opDrive = new OpDrive();
         red1 = new Red1();
+        red2 = new Red2();
+        red3 = new Red3();
+        blue1 = new Blue1();
+        blue2 = new Blue2();
+        blue3 = new Blue3();
         sweepForward = new SweeperForward();
 
     	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
@@ -114,8 +128,9 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
-  //      if (autonomousCommand != null) autonomousCommand.isCanceled();
+        if (autonomousCommand != null) autonomousCommand.isCanceled();
         if(isEnabled()&&isOperatorControl()) opDrive.start();
+        isTeleop = true;
     }
 
     /**

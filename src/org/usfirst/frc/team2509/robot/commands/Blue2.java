@@ -116,49 +116,53 @@ protected final Scalar
     			OUTPUT_STREAM.putFrame(SOURCE);
     			}
     	}).start();
-//Robot positions self
-    	DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
-    		Timer.delay(1.4);
+    		DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
+    		Timer.delay(1.25);
     		DT.drive(0,0);
     		Timer.delay(0.75);
-//Robot recognizes and centers pn target    		
-    		while(TARGET.width<55){
-    			while(TARGET.x<65){
-    				DT.mecanumDrive_Cartesian(0.3, 0, 0, GYRO.getAngle());
+    		while(/*SWITCH.get()==false&&*/TARGET.width<55&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    	    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
+    			if(TARGET.x<65){
+    				DT.mecanumDrive_Cartesian(0.3, 0, 0, 0);
     				Timer.delay(0.05);
-    				DT.mecanumDrive_Cartesian(0, 0, 0, GYRO.getAngle());
-    			}while(TARGET.x>75){
-    				DT.mecanumDrive_Cartesian(-0.3,0, 0, GYRO.getAngle());
+    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
+    			}else if(TARGET.x>75){
+    				DT.mecanumDrive_Cartesian(-0.3,0, 0, 0);
     				Timer.delay(0.05);
-    				DT.mecanumDrive_Cartesian(0, 0, 0, GYRO.getAngle());
-    			}if(TARGET.x>65&&TARGET.x<75){
-    				DT.mecanumDrive_Cartesian(0, 0.4, 0, GYRO.getAngle());	
-    				Timer.delay(0.3);
+    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
+    			}else if(TARGET.x>=65&&TARGET.x<=75){
+    				DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);	
+    				Timer.delay(0.25);
     				DT.mecanumDrive_Cartesian(0, 0.0, 0, 0);
+    				Timer.delay(0.25);
     			}
-    		}
-//Robot pulls back    		
-    		Timer.delay(2);
-    		DT.mecanumDrive_Cartesian(0, -0.7, 0, 0);
-    		Timer.delay(0.5);
+		}
+    	DT.mecanumDrive_Cartesian(0, 0.2, 0, 0);
+    	Timer.delay(0.5);
+    	DT.drive(0, 0);
+    	while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    		DT.drive(0,0);
+    	}
+    	if(SWITCH.get()&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    		Timer.delay(0.1);
+    		DT.mecanumDrive_Cartesian(0, -0.3, 0, 0);
+    		Timer.delay(0.05);
     		DT.drive(0, 0);
-//Robot positions itself to shoot (60 dungerees)    		
-    		while(GYRO.getAngle()<(60)) DT.mecanumDrive_Cartesian(0, 0, 0.5, 0);
-    		if(GYRO.getAngle()>(60)) DT.drive(0, 0);
-    		DT.mecanumDrive_Cartesian(0, -0.5, 0, 0);
-    		Timer.delay(1.0);
-    		DT.drive(0, 0);
-    		
+    	}	
     }
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
+    	if(Robot.isTeleop) end();
     }
     
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        if(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5){
+        	return false;
+        }else{
+        	return true;
+        }
     }
 
     // Called once after isFinished returns true

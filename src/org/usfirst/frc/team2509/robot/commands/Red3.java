@@ -107,59 +107,66 @@ public class Red3 extends Command {
 	    			}
 	    	}).start();
 	    	DT.mecanumDrive_Cartesian(0, 0.75, 0, 0);
-	    	Timer.delay(1.15);
+	    	Timer.delay(1.1);
 	    	DT.drive(0, 0);
-	    	while(GYRO.getAngle()>(-52)) DT.mecanumDrive_Cartesian(0, 0, -0.4, 0);
-	    	if(GYRO.getAngle()<(-52)) DT.drive(0, 0);
-	    	DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
-	    	Timer.delay(.6);
+	    	while(GYRO.getAngle()>(-42)) DT.mecanumDrive_Cartesian(0, 0, -0.4, 0);
+	    	if(GYRO.getAngle()<(-42)) DT.drive(0, 0);
+	    	DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);
+	    	Timer.delay(.2);
 	    	DT.drive(0, 0);
 	    	Timer.delay(0.9);
-	    	while(SWITCH.get()==false&&TARGET.width<55){
-	    	    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
-	    			if(TARGET.x<65){
-	    				DT.mecanumDrive_Cartesian(0.3, 0, 0, 0);
-	    				Timer.delay(0.05);
-	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
-	    			}else if(TARGET.x>75){
-	    				DT.mecanumDrive_Cartesian(-0.3,0, 0, 0);
-	    				Timer.delay(0.05);
-	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
-	    			}else if(TARGET.x>=65&&TARGET.x<=75){
-	    				DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);	
-	    				Timer.delay(0.25);
-	    				DT.mecanumDrive_Cartesian(0, 0.0, 0, 0);
-	    				Timer.delay(0.25);
-	    			}
-	    			if(SWITCH.get()){
-	    	    		DT.mecanumDrive_Cartesian(0, -0.7, 0, 0);
-	    	        	Timer.delay(0.5);
-	    	       		DT.drive(0, 0);
-	    	    	}    
-    		}
-	    	Timer.delay(0.25);
-	    	if(SWITCH.get()){
-	    		DT.mecanumDrive_Cartesian(0, -0.7, 0, 0);
-	        	Timer.delay(0.5);
-	       		DT.drive(0, 0);
-	    	}    		
+	    	while(/*SWITCH.get()==false&&*/TARGET.width<55&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    	    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
+    			if(TARGET.x<65){
+    				DT.mecanumDrive_Cartesian(0.3, 0, 0, 0);
+    				Timer.delay(0.05);
+    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
+    			}else if(TARGET.x>75){
+    				DT.mecanumDrive_Cartesian(-0.3,0, 0, 0);
+    				Timer.delay(0.05);
+    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
+    			}else if(TARGET.x>=65&&TARGET.x<=75){
+    				DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);	
+    				Timer.delay(0.25);
+    				DT.mecanumDrive_Cartesian(0, 0.0, 0, 0);
+    				Timer.delay(0.25);
+    			}
+		}
+    	DT.mecanumDrive_Cartesian(0, 0.2, 0, 0);
+    	Timer.delay(0.5);
+    	DT.drive(0, 0);
+    	while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    		DT.drive(0,0);
+    	}
+    	if(SWITCH.get()&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    		Timer.delay(0.1);
+    		DT.mecanumDrive_Cartesian(0, -0.3, 0, 0);
+    		Timer.delay(0.05);
+    		DT.drive(0, 0);
+    	}	
 	    }
-    protected void execute() {
-    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
-    }
+	    protected void execute() {
+	    	if(Robot.isTeleop) end();
+	    }
+	    
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
+	    // Make this return true when this Command no longer needs to run execute()
+	    protected boolean isFinished() {
+	        if(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5){
+	        	return false;
+	        }else{
+	        	return true;
+	        }
+	    }
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	
-    }
+	    // Called once after isFinished returns true
+	    protected void end() {
+	    	DT.drive(0, 0);
+	    }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
-}
+	    // Called when another command which requires one or more of the same
+	    // subsystems is scheduled to run
+	    protected void interrupted() {
+	    	end();
+	    }
+	}
