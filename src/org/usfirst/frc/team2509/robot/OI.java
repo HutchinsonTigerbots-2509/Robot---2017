@@ -1,6 +1,5 @@
 package org.usfirst.frc.team2509.robot;
 
-
 import org.usfirst.frc.team2509.robot.commands.Blue1;
 import org.usfirst.frc.team2509.robot.commands.Blue2;
 import org.usfirst.frc.team2509.robot.commands.Blue3;
