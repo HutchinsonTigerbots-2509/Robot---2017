@@ -7,13 +7,14 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -25,11 +26,11 @@ public class RobotMap {
 	
     public static CANTalon CLIMB_MOTOR;
     public static CANTalon CLIMB_ALT;
-    public static CANTalon DT_LEFTFRONT;
+     public static CANTalon DT_LEFTFRONT;
     public static CANTalon DT_RIGHTFRONT;
     public static CANTalon DT_LEFTREAR;
     public static CANTalon DT_RIGHTREAR;
-    public static AnalogGyro DT_GYRO;
+    public static ADXRS450_Gyro DT_GYRO;
     public static RobotDrive DRIVETRAIN;
     public static UsbCamera GEAR_CAM;
     public static DigitalInput GEAR_SWITCH;
@@ -63,26 +64,26 @@ public class RobotMap {
         DT_RIGHTREAR = new CANTalon(3);
         LiveWindow.addActuator("DriveTrain", "DT_RIGHTREAER", DT_RIGHTREAR);
         
-        DT_GYRO = new AnalogGyro(0);
-        DT_GYRO.initGyro();
-        DT_GYRO.calibrate();
-        LiveWindow.addSensor("Gyro", 0, DT_GYRO);
-                
+        DT_GYRO = new ADXRS450_Gyro();
+       	DT_GYRO.reset();
+       	DT_GYRO.calibrate();
+        SmartDashboard.putDouble("GYRO", RobotMap.DT_GYRO.getAngle());
+       	
         DRIVETRAIN = new RobotDrive(DT_LEFTFRONT, DT_LEFTREAR,DT_RIGHTFRONT, DT_RIGHTREAR);
         DRIVETRAIN.setSafetyEnabled(false);
         DRIVETRAIN.setExpiration(1.0);
         DRIVETRAIN.setSensitivity(1.0);
         DRIVETRAIN.setMaxOutput(1.0);
-        DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
-        DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
+    //    DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+    //    DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
             
-        GEAR_CAM = CameraServer.getInstance().startAutomaticCapture("GEAR", 0);
+        GEAR_CAM = CameraServer.getInstance().startAutomaticCapture("GEAR", 1);
         GEAR_CAM.setBrightness(0);
         
         GEAR_SWITCH = new DigitalInput(0);
         LiveWindow.addSensor("GEAR SWITCH", 0, GEAR_SWITCH);
         
-        SHOOT_CAM = CameraServer.getInstance().startAutomaticCapture("SHOOTER", 1);
+        SHOOT_CAM = CameraServer.getInstance().startAutomaticCapture("SHOOTER", 0);
         SHOOT_CAM.setBrightness(0);
         
         SHOOT_KICKER = new Talon(1);

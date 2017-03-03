@@ -3,7 +3,7 @@ package org.usfirst.frc.team2509.robot.commands;
 import org.usfirst.frc.team2509.robot.Robot;
 import org.usfirst.frc.team2509.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Command;
@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class GyroTurn extends Command {
 	private Joystick stick = Robot.oi.getOpStick();
 	private RobotDrive drive = RobotMap.DRIVETRAIN;
-    private AnalogGyro gyro = RobotMap.DT_GYRO;
+    private ADXRS450_Gyro gyro = RobotMap.DT_GYRO;
 	public GyroTurn() {
     	
     }

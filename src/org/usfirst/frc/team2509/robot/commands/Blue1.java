@@ -13,7 +13,7 @@ import org.usfirst.frc.team2509.robot.RobotMap;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
-import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -50,7 +50,7 @@ public class Blue1 extends Command {
 		LOWER_BOUNDS = new Scalar(180,190,40),
 		UPPER_BOUNDS = new Scalar(200,210,60);
 		private final RobotDrive DT = RobotMap.DRIVETRAIN;
-		private final AnalogGyro GYRO = RobotMap.DT_GYRO;
+		private final ADXRS450_Gyro GYRO = RobotMap.DT_GYRO;
 		private final DigitalInput SWITCH = RobotMap.GEAR_SWITCH;
 		private Rect TARGET;
 	    public Blue1() {
@@ -106,6 +106,7 @@ public class Blue1 extends Command {
 	    	Timer.delay(.7);
 	    	DT.drive(0, 0);
 	    	Timer.delay(0.9);
+	    	if(TARGET != null){
 	    	while(SWITCH.get()==false&&TARGET.width<55&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
     	    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
     			if(TARGET.x<65){
@@ -136,6 +137,7 @@ public class Blue1 extends Command {
 	    		Timer.delay(0.05);
 	    		DT.drive(0, 0);
 	    	}	
+	    	}
 	    }
 	    protected void execute() {
 	    	if(Robot.isTeleop) end();

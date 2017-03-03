@@ -15,7 +15,7 @@ import org.usfirst.frc.team2509.robot.RobotMap;
 
 import com.ctre.CANTalon;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -29,7 +29,7 @@ public class DriveTrain extends Subsystem {
     private final CANTalon RIGHT_FRONT = RobotMap.DT_RIGHTFRONT;
     private final CANTalon LEFT_REAR = RobotMap.DT_LEFTREAR;
     private final CANTalon RIGHT_REAR = RobotMap.DT_RIGHTREAR;
-    public final AnalogGyro GYRO = RobotMap.DT_GYRO;
+    public final ADXRS450_Gyro GYRO = RobotMap.DT_GYRO;
     private final RobotDrive DRIVETRAIN = RobotMap.DRIVETRAIN;
     
     // Put methods for controlling this subsystem
@@ -53,7 +53,7 @@ public class DriveTrain extends Subsystem {
     public CANTalon getRightRear(){
     	return RIGHT_REAR;
     }
-    public AnalogGyro getGyro(){
+    public ADXRS450_Gyro getGyro(){
     	return GYRO;
     }
 }

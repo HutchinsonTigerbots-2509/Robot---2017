@@ -15,7 +15,7 @@ import org.usfirst.frc.team2509.robot.RobotMap;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
-import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -52,7 +52,7 @@ public class TestAuto extends Command {
 		LOWER_BOUNDS = new Scalar(180,190,40),
 		UPPER_BOUNDS = new Scalar(200,210,60);
 		private final RobotDrive DT = RobotMap.DRIVETRAIN;
-		private final AnalogGyro GYRO = RobotMap.DT_GYRO;
+		private final ADXRS450_Gyro GYRO = RobotMap.DT_GYRO;
 		private final DigitalInput SWITCH = RobotMap.GEAR_SWITCH;
 		private Rect TARGET;
 	    public TestAuto() {

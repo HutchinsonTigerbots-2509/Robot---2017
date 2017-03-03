@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2509.robot;
 
+import org.usfirst.frc.team2509.robot.commands.AutonomousCommand;
 import org.usfirst.frc.team2509.robot.commands.Blue1;
 import org.usfirst.frc.team2509.robot.commands.Blue2;
 import org.usfirst.frc.team2509.robot.commands.Blue3;
@@ -73,6 +74,7 @@ public class OI {
 		chooser.addObject("Blue 2", BLUE2);
 		chooser.addObject("Blue 3", BLUE3);
 		SmartDashboard.putData("Auto choices", chooser);
+		
 	}
     public Joystick getOpStick() {
         return OPSTICK;
@@ -91,6 +93,7 @@ public class OI {
 	}
 	public Command getAutonomous(String autoChoice){
 		switch(autoChoice){
+		
     	case "Red 1":
     		 autoCommand = new Red1();
     		 break;
@@ -109,6 +112,10 @@ public class OI {
     	case "Blue 3":
     		autoCommand = new Blue3();
     		break;
+    	case "Default":
+		default:
+			autoCommand = new AutonomousCommand();
+			break;
     	}
 		return autoCommand;
 	}

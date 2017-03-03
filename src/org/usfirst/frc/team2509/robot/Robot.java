@@ -15,6 +15,7 @@ import org.usfirst.frc.team2509.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2509.robot.subsystems.Shooter;
 import org.usfirst.frc.team2509.robot.subsystems.Sweeper;
 import org.usfirst.frc.team2509.robot.subsystems.Vision;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
@@ -86,7 +87,13 @@ public class Robot extends IterativeRobot {
         blue2 = new Blue2();
         blue3 = new Blue3();
         sweepForward = new SweeperForward();
-
+        new Thread(()->{
+			while(true){
+				SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
+				SmartDashboard.putDouble("GYRO ANGLE" , RobotMap.DT_GYRO.getAngle());	
+				SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
+			}
+		}).start();
     	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
     }
 
@@ -102,6 +109,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit() {
+    	RobotMap.DT_GYRO.reset();
     	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
     	autoCommand = oi.chooser.getSelected();
     	autonomousCommand = oi.getAutonomous(autoCommand);
@@ -144,6 +152,8 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+        
+        System.out.println(RobotMap.DT_GYRO.getAngle());
         opDrive.start();
     }
 }
