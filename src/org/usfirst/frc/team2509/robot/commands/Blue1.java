@@ -103,11 +103,11 @@ public class Blue1 extends Command {
 	    	while(GYRO.getAngle()<(55)) DT.mecanumDrive_Cartesian(0, 0, 0.4, 0);
 	    	if(GYRO.getAngle()>(55)) DT.drive(0, 0);
 	    	DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);
-	    	Timer.delay(.7);
+	    	Timer.delay(.2);
 	    	DT.drive(0, 0);
 	    	Timer.delay(0.9);
 	    	if(TARGET != null){
-	    	while(SWITCH.get()==false&&TARGET.width<55&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+	    	while(/*SWITCH.get()==false&&*/TARGET.width<55&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
     	    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
     			if(TARGET.x<65){
     				DT.mecanumDrive_Cartesian(0.3, 0, 0, 0);
@@ -128,7 +128,7 @@ public class Blue1 extends Command {
     	Timer.delay(0.5);
     	DT.drive(0, 0);
     	Timer.delay(0.25);*/
-	    	while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+	/*    	while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
 	    		DT.drive(0,0);
 	    	}
 	    	if(SWITCH.get()&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
@@ -136,7 +136,7 @@ public class Blue1 extends Command {
 	    		DT.mecanumDrive_Cartesian(0, -0.3, 0, 0);
 	    		Timer.delay(0.05);
 	    		DT.drive(0, 0);
-	    	}	
+	    	}	*/
 	    	}
 	    }
 	    protected void execute() {

@@ -141,7 +141,7 @@ protected final Scalar
     	DT.mecanumDrive_Cartesian(0, 0.2, 0, 0);
     	Timer.delay(0.5);
     	DT.drive(0, 0);
-    	while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    	/*while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
     		DT.drive(0,0);
     	}
     	if(SWITCH.get()&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
@@ -149,7 +149,7 @@ protected final Scalar
     		DT.mecanumDrive_Cartesian(0, -0.3, 0, 0);
     		Timer.delay(0.05);
     		DT.drive(0, 0);
-    	}	
+    	}	*/
     	}
     }
     // Called repeatedly when this Command is scheduled to run

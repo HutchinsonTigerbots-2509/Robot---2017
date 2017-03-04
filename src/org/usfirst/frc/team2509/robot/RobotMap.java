@@ -52,13 +52,13 @@ public class RobotMap {
         GATE.setInverted(true);
         LiveWindow.addActuator("Gate", "Gate", GATE);
         
-        DT_LEFTFRONT = new CANTalon(0);
+        DT_LEFTFRONT = new CANTalon(2);
         LiveWindow.addActuator("DriveTrain", "DT_LEFTFRONT", DT_LEFTFRONT);
         
         DT_RIGHTFRONT = new CANTalon(1);
         LiveWindow.addActuator("DriveTrain", "DT_RIGHTFRONT", DT_RIGHTFRONT);
         
-        DT_LEFTREAR = new CANTalon(2);
+        DT_LEFTREAR = new CANTalon(0);
         LiveWindow.addActuator("DriveTrain", "DT_LEFTREAR", DT_LEFTREAR);
         
         DT_RIGHTREAR = new CANTalon(3);
@@ -74,8 +74,8 @@ public class RobotMap {
         DRIVETRAIN.setExpiration(1.0);
         DRIVETRAIN.setSensitivity(1.0);
         DRIVETRAIN.setMaxOutput(1.0);
-    //    DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
-    //    DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
+        DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+        DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
             
         GEAR_CAM = CameraServer.getInstance().startAutomaticCapture("GEAR", 1);
         GEAR_CAM.setBrightness(0);
