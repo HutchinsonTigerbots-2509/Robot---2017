@@ -34,6 +34,7 @@ public class RobotMap {
     public static RobotDrive DRIVETRAIN;
     public static UsbCamera GEAR_CAM;
     public static DigitalInput GEAR_SWITCH;
+    public static Talon GEAR_PUSH;
     public static UsbCamera SHOOT_CAM;
     public static CANTalon SHOOT_MOTOR;
     public static Encoder SHOOT_ENCODER;
