@@ -3,6 +3,7 @@ package org.usfirst.frc.team2509.robot;
 import org.usfirst.frc.team2509.robot.commands.Blue1;
 import org.usfirst.frc.team2509.robot.commands.Blue2;
 import org.usfirst.frc.team2509.robot.commands.Blue3;
+import org.usfirst.frc.team2509.robot.commands.FilterTarget;
 import org.usfirst.frc.team2509.robot.commands.GyroTurn;
 import org.usfirst.frc.team2509.robot.commands.OpDrive;
 import org.usfirst.frc.team2509.robot.commands.Red1;
@@ -86,6 +87,7 @@ public class Robot extends IterativeRobot {
         blue1 = new Blue1();
         blue2 = new Blue2();
         blue3 = new Blue3();
+        Command FilterTarget = new FilterTarget();
         sweepForward = new SweeperForward();
         new Thread(()->{
 			while(true){
@@ -95,6 +97,7 @@ public class Robot extends IterativeRobot {
 			}
 		}).start();
         System.out.println("Robot Ready");
+        FilterTarget.start();
     }
 
     /**

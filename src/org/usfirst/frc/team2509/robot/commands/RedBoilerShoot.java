@@ -151,53 +151,56 @@ public class RedBoilerShoot extends Command {
     	while(GYRO.getAngle()>(-45)) DT.mecanumDrive_Cartesian(0, 0, -0.4, 0);
     	if(GYRO.getAngle()<(-45)) DT.drive(0, 0);
     	//Drive Forward @ 40% for 0.2 Seconds
-    	DT.mecanumDrive_Cartesian(0, 0.8, 0, 0);
+    	DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
     	Timer.delay(.3);
     	DT.drive(0, 0);
     	//Pause For 0.9 Seconds
     	Timer.delay(0.9);//This May Be Able To Be Shortened
     	//If Robot see Target Continue
+    	while(GEARTARGET == null)Timer.delay(0.02);
     	if(GEARTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)){
 			System.out.println("FOUND TARGET");
 			//While Target is less than 55 and in AutoTime
-			while(SWITCH.get()==false&&GEARTARGET.width<35&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+			while(/*SWITCH.get()==false&&*/GEARTARGET.width<37&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
 	    		  //SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
 	    	    	//If Target is Left of Goal move left
 	    			if(GEARTARGET.x<52){
 	    				System.out.println("TO THE LEFT");
-	    				DT.mecanumDrive_Cartesian(0.35, 0, 0, 0);
+	    				DT.mecanumDrive_Cartesian(0.3, 0, 0, 0);
 	    				Timer.delay(0.05);
 	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
 	    			}
 	    			//If Target is Right of Goal Move right
 	    			else if(GEARTARGET.x>62){
 	    				System.out.println("TO THE RIGHT");
-	    				DT.mecanumDrive_Cartesian(-0.35,0, 0, 0);
+	    				DT.mecanumDrive_Cartesian(-0.3,0, 0, 0);
 	    				Timer.delay(0.05);
 	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
 	    			}
 	    			//If Target is In Goal move Forward
 	    			else if(GEARTARGET.x>=50&&GEARTARGET.x<=60){
 	    				System.out.println("FORWARD");
-	    				DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);	
+	    				DT.mecanumDrive_Cartesian(0, 0.3, 0, 0);	
 	    				Timer.delay(0.25);
 	    				DT.mecanumDrive_Cartesian(0, 0.0, 0, 0);
 	    				Timer.delay(0.25);
 	    			}
 	    		}
+				
 	    		DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
-	    		Timer.delay(0.25);
+	    		Timer.delay(0.4);
 	    		DT.drive(0, 0);
-    		while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    	/*	while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
     			Timer.delay(0.05);
     			System.out.println("WAITING");
-    		}
+    		}*/
     		gearV.stop();
     		Timer.delay(1.5);
     		boilerV.start();//Shooter Vision Thread
     		DT.mecanumDrive_Cartesian(0, -0.75, 0, 0);
     	    Timer.delay(0.75);
     	    DT.mecanumDrive_Cartesian(0, 0, 0, 0);
+    	    
     	    System.out.println("SHOOTER STARTING");
     	    while(GYRO.getAngle()<(-37)) DT.mecanumDrive_Cartesian(0, 0, 0.4, 0);
         	if(GYRO.getAngle()>(-37)) DT.drive(0, 0);
@@ -225,13 +228,13 @@ public class RedBoilerShoot extends Command {
         			}
         		}
         		 System.out.println(Timer.getMatchTime());
-         		RobotMap.GATE.set(0.3);
+         		RobotMap.GATE.set(0.6);
          		System.out.println("GATE OPENING");
          	    Timer.delay(0.125);
          	    RobotMap.GATE.set(0);
          	    RobotMap.SHOOT_MOTOR.set(TARGETSPEED);
          	    System.out.println("AUGER STARTING");
-         	    RobotMap.SHOOT_KICKER.set(1);
+         	    RobotMap.SHOOT_KICKER.set(0.75);
         	}else{
         		System.out.println("NO TARGET");
         	}
@@ -259,7 +262,7 @@ public class RedBoilerShoot extends Command {
 	// Called once after isFinished returns true
     protected void end() {
     	DT.drive(0, 0);
-    	RobotMap.GATE.set(-0.3);
+    	RobotMap.GATE.set(-0.6);
         Timer.delay(0.125);
         RobotMap.GATE.set(0);
     	RobotMap.SHOOT_KICKER.set(0);

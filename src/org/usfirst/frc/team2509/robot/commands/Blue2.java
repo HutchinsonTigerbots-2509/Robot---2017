@@ -113,8 +113,8 @@ protected final Scalar
     protected void initialize() {
 
 		gearV.start();
-    	DT.mecanumDrive_Cartesian(0, 0.75, 0, 0);
-		Timer.delay(0.75);
+    	DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
+		Timer.delay(1.0);
 		DT.drive(0,0);
 		Timer.delay(0.75);
     		if(TARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)){

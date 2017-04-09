@@ -154,15 +154,15 @@ public class RedCenterShoot extends Command {
     protected void initialize() {
     		gearV.start();
     		//Drive forward @ 50% for 1.05 seconds
-    		DT.mecanumDrive_Cartesian(0, 0.75, 0, 0);
-    		Timer.delay(0.75);
+    		DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
+    		Timer.delay(1.0);
     		DT.drive(0,0);
     		Timer.delay(0.75);
     		//If Robot See Target Continue
     		if(GEARTARGET != null){
     			System.out.println("FOUND TARGET");
     			//While Target is less than 55 and in AutoTime
-    			while(SWITCH.get()==false&&GEARTARGET.width<35&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    			while(/*SWITCH.get()==false&&&*/GEARTARGET.width<35&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
     	    		  //SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
     	    	    	//If Target is Left of Goal move left
     	    			if(GEARTARGET.x<50){
@@ -236,7 +236,7 @@ public class RedCenterShoot extends Command {
             		System.out.println("NO TARGET");
             	}
         	    System.out.println(Timer.getMatchTime());
-        		RobotMap.GATE.set(0.3);
+        		RobotMap.GATE.set(0.6);
         		System.out.println("GATE OPENING");
         	    Timer.delay(0.125);
         	    RobotMap.GATE.set(0);
@@ -268,7 +268,7 @@ public class RedCenterShoot extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	DT.drive(0, 0);
-    	RobotMap.GATE.set(-0.3);
+    	RobotMap.GATE.set(-0.6);
         Timer.delay(0.125);
         RobotMap.GATE.set(0);
     	RobotMap.SHOOT_KICKER.set(0);

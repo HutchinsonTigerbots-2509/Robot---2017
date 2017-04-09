@@ -151,8 +151,8 @@ public Red2() {
 protected void initialize() {
 		gearV.start();
 		//Drive forward @ 50% for 1.05 seconds
-		DT.mecanumDrive_Cartesian(0, 0.75, 0, 0);
-		Timer.delay(0.75);
+		DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
+		Timer.delay(1.0);
 		DT.drive(0,0);
 		Timer.delay(0.75);
 		//If Robot See Target Continue

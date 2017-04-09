@@ -160,7 +160,7 @@ public class BlueBoilerShoot extends Command {
     	if(GEARTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)){
 			System.out.println("FOUND TARGET");
 			//While Target is less than 55 and in AutoTime
-			while(SWITCH.get()==false&&GEARTARGET.width<35&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+			while(/*SWITCH.get()==false&&*/GEARTARGET.width<35&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
 	    		  //SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
 	    	    	//If Target is Left of Goal move left
 	    			if(GEARTARGET.x<52){
@@ -188,7 +188,7 @@ public class BlueBoilerShoot extends Command {
 	    		DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
 	    		Timer.delay(0.25);
 	    		DT.drive(0, 0);
-    		while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    		while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
     			Timer.delay(0.05);
     			System.out.println("WAITING");
     		}

@@ -120,7 +120,7 @@ public class Red3 extends Command {
 	     	if(TARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)){
 	 			System.out.println("FOUND TARGET");
 	 			//While Target is less than 55 and in AutoTime
-	 			while(SWITCH.get()==false&&TARGET.width<35&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+	 			while(/*SWITCH.get()==false&&*/TARGET.width<35&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
 	 	    		  //SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
 	 	    	    	//If Target is Left of Goal move left
 	 	    			if(TARGET.x<52){

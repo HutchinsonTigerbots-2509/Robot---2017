@@ -80,14 +80,15 @@ public class RobotMap {
         DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
         DRIVETRAIN.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
             
-        GEAR_CAM = CameraServer.getInstance().startAutomaticCapture("GEAR", 1);
+        GEAR_CAM = CameraServer.getInstance().startAutomaticCapture("GEAR", 0);
         GEAR_CAM.setBrightness(0);
-        GEAR_CAM.setResolution(120,160);
+        GEAR_CAM.setResolution(160,120);
+        GEAR_CAM.setFPS(30);
         
         GEAR_SWITCH = new DigitalInput(0);
         LiveWindow.addSensor("GEAR SWITCH", 0, GEAR_SWITCH);
         
-        SHOOT_CAM = CameraServer.getInstance().startAutomaticCapture("SHOOTER", 0);
+        SHOOT_CAM = CameraServer.getInstance().startAutomaticCapture("SHOOTER", 1);
         SHOOT_CAM.setBrightness(0);
         SHOOT_CAM.setResolution(160, 120);
         

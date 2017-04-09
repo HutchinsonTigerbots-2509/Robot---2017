@@ -14,7 +14,7 @@ import com.ctre.CANTalon.TalonControlMode;
  * @author Nate
  */
 public class ShooterRun extends Command {
-	private double TARGETSPEED = 4000;
+	private double TARGETSPEED = 4000 ;
 	private final CANTalon MOTOR = Robot.shooter.getShoot();
 	private final Talon KICKER = Robot.shooter.getKicker();
 	private final Talon GATE = RobotMap.GATE;
@@ -29,7 +29,7 @@ public class ShooterRun extends Command {
     	System.out.println("SHOOTER STARTING");
     	Timer.delay(0.5);
 		System.out.println("GATE OPENING");
-		GATE.set(0.3);
+		GATE.set(0.6);
     	Timer.delay(0.125);
     	GATE.set(0);
     	System.out.println("AUGER STARTING");
@@ -52,7 +52,7 @@ public class ShooterRun extends Command {
     	MOTOR.set(0);
     	MOTOR.changeControlMode(TalonControlMode.Speed);
     	KICKER.set(0.0);
-    	GATE.set(-0.3);
+    	GATE.set(-0.6);
     	Timer.delay(0.125);
     	GATE.set(0.0);
     }
