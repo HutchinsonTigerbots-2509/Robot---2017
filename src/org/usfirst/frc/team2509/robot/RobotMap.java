@@ -3,6 +3,10 @@
  */
 package org.usfirst.frc.team2509.robot;
 
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -12,10 +16,6 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
-import com.ctre.CANTalon.TalonControlMode;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -103,9 +103,9 @@ public class RobotMap {
         SHOOT_MOTOR.configPeakOutputVoltage(+12.0f, -12.0f);
         SHOOT_MOTOR.setProfile(0); 
         SHOOT_MOTOR.setF(0);
-        SHOOT_MOTOR.setP(0.1);
-        SHOOT_MOTOR.setI(0.0002);
-        SHOOT_MOTOR.setD(0.0001);
+        SHOOT_MOTOR.setP(0.04);//0.1
+        SHOOT_MOTOR.setI(0.0002);//0.0002
+        SHOOT_MOTOR.setD(0.0001);//0.0001
         SHOOT_MOTOR.changeControlMode(TalonControlMode.Speed);
         LiveWindow.addActuator("Shooter", "Motor", (CANTalon) SHOOT_MOTOR);
                 

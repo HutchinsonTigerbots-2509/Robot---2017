@@ -23,6 +23,8 @@ import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team2509.robot.Robot;
 import org.usfirst.frc.team2509.robot.RobotMap;
 
+import com.ctre.CANTalon.TalonControlMode;
+
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -32,8 +34,6 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.ctre.CANTalon.TalonControlMode;
 
 /**
  *
@@ -159,7 +159,7 @@ public class RedCenterShoot extends Command {
     		DT.drive(0,0);
     		Timer.delay(0.75);
     		//If Robot See Target Continue
-    		if(GEARTARGET != null){
+    		if(GEARTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
     			System.out.println("FOUND TARGET");
     			//While Target is less than 55 and in AutoTime
     			while(/*SWITCH.get()==false&&&*/GEARTARGET.width<35&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
@@ -191,10 +191,10 @@ public class RedCenterShoot extends Command {
     	    		Timer.delay(0.25);
     	    		DT.drive(0, 0);
     	    		gearV.stop();
-        		while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)){
+        		/*while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)){
         			Timer.delay(0.05);
         			System.out.println("WAITING");
-        		}
+        		}*/
         		boilerV.start();
         		Timer.delay(1.5);
         		DT.mecanumDrive_Cartesian(0, -0.75, 0, 0);

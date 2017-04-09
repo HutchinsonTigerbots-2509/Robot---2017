@@ -13,6 +13,8 @@ import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team2509.robot.Robot;
 import org.usfirst.frc.team2509.robot.RobotMap;
 
+import com.ctre.CANTalon.TalonControlMode;
+
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -22,8 +24,6 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.ctre.CANTalon.TalonControlMode;
 
 /**
  *
@@ -36,7 +36,7 @@ public class RedBoilerShoot extends Command {
 		GEARSINK = CameraServer.getInstance().getVideo("GEAR"),
 		SHOOTERSINK = CameraServer.getInstance().getVideo("SHOOTER");
 	private double
-	TARGETSPEED= 4100,
+	TARGETSPEED= 4000,
 	DISTANCE;
 	private final CvSource 
 		OUTPUT_STREAM = CameraServer.getInstance().putVideo("ALT-Cam", 640, 480);
@@ -145,7 +145,7 @@ public class RedBoilerShoot extends Command {
 	    
 	    //Drive Forward @ 75% for 1.15 Seconds
 	    DT.mecanumDrive_Cartesian(0, 0.75, 0, 0);
-    	Timer.delay(1.2);
+    	Timer.delay(1.15);
     	DT.drive(0, 0);
     	//Rotate the Robot untill GYRO reads -42 degrees
     	while(GYRO.getAngle()>(-45)) DT.mecanumDrive_Cartesian(0, 0, -0.4, 0);
@@ -194,7 +194,8 @@ public class RedBoilerShoot extends Command {
     			Timer.delay(0.05);
     			System.out.println("WAITING");
     		}*/
-    		gearV.stop();
+
+	    	gearV.stop();
     		Timer.delay(1.5);
     		boilerV.start();//Shooter Vision Thread
     		DT.mecanumDrive_Cartesian(0, -0.75, 0, 0);
@@ -206,8 +207,8 @@ public class RedBoilerShoot extends Command {
         	if(GYRO.getAngle()>(-37)) DT.drive(0, 0);
     	    RobotMap.SHOOT_MOTOR.set(4100);
     	    Timer.delay(0.5);
-    	    while(SHOOTTARGET == null)Timer.delay(0.02);
-    	    if(SHOOTTARGET != null){
+    	    while(SHOOTTARGET == null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15))Timer.delay(0.02);
+    	    if(SHOOTTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
         		System.out.println("AIMING NOW");
         		while(SHOOTTARGET.x<=90||SHOOTTARGET.x>=100&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
         			if(SHOOTTARGET.x>98&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
