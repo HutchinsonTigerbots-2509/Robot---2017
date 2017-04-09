@@ -35,6 +35,8 @@ public class OpDrive extends Command {
     protected void execute() {
     	if(OI.OPSTICK.getRawButton(8)||OI.OPSTICK.getRawButton(7)){
     		DRIVETRAIN.mecanumDrive_Cartesian(0, OI.getScaledY(), OI.getScaledZ(), 0);
+    	}else if(OI.OPSTICK.getRawButton(2)){
+    		DRIVETRAIN.mecanumDrive_Cartesian(((-1)*OI.getScaledX()), ((-1)*OI.getScaledY()), OI.getScaledZ(), 0);
     	}else{
     		DRIVETRAIN.mecanumDrive_Cartesian(OI.getScaledX(), OI.getScaledY(), OI.getScaledZ(), 0);
     	}

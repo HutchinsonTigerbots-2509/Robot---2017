@@ -3,7 +3,6 @@ package org.usfirst.frc.team2509.robot;
 import org.usfirst.frc.team2509.robot.commands.Blue1;
 import org.usfirst.frc.team2509.robot.commands.Blue2;
 import org.usfirst.frc.team2509.robot.commands.Blue3;
-import org.usfirst.frc.team2509.robot.commands.FilterGearTarget;
 import org.usfirst.frc.team2509.robot.commands.GyroTurn;
 import org.usfirst.frc.team2509.robot.commands.OpDrive;
 import org.usfirst.frc.team2509.robot.commands.Red1;
@@ -56,7 +55,9 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Sweeper sweeper;
     public static Vision vision;
-    String autoCommand,RED1,RED2,RED3,BLUE1,BLUE2,BLUE3;
+    String autoCommand,
+    	BLUE1,BLUE2,BLUE3,BLUECENTER,BLUESHOOT,
+    	RED1,RED2,RED3,REDCENTER,REDSHOOT;
     public static boolean isTeleop;
     
     /**
@@ -77,7 +78,6 @@ public class Robot extends IterativeRobot {
         // pointers. Bad news. Don't move it.
         oi = new OI();
         // instantiate the command used for the autonomous perio
-        filterGearTarget = new FilterGearTarget();
         gyroTurn = new GyroTurn();
         opDrive = new OpDrive();
         red1 = new Red1();
@@ -90,11 +90,11 @@ public class Robot extends IterativeRobot {
         new Thread(()->{
 			while(true){
 				SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
-				SmartDashboard.putDouble("GYRO ANGLE" , RobotMap.DT_GYRO.getAngle());	
-				SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
+				SmartDashboard.putNumber("GYRO ANGLE" , RobotMap.DT_GYRO.getAngle());
+				SmartDashboard.putNumber("Encoder", (RobotMap.SHOOT_MOTOR.getSpeed()));
 			}
 		}).start();
-    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
+        System.out.println("Robot Ready");
     }
 
     /**
@@ -121,7 +121,6 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
         Scheduler.getInstance().run();
         
 		
@@ -142,7 +141,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
     	Scheduler.getInstance().run();
-        SmartDashboard.putDouble("GYRO ANGLE" , RobotMap.DT_GYRO.getAngle());
+        SmartDashboard.putNumber("GYRO ANGLE" , RobotMap.DT_GYRO.getAngle());
     	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
         
     }
@@ -152,8 +151,6 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
-        
-        System.out.println(RobotMap.DT_GYRO.getAngle());
-        opDrive.start();
+        //System.out.println(RobotMap.DT_GYRO.getAngle());
     }
 }
