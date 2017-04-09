@@ -29,7 +29,7 @@ public class ShooterRun extends Command {
     	System.out.println("SHOOTER STARTING");
     	Timer.delay(0.5);
 		System.out.println("GATE OPENING");
-		GATE.set(0.3);
+		GATE.set(0.6);
     	Timer.delay(0.125);
     	GATE.set(0);
     	System.out.println("AUGER STARTING");

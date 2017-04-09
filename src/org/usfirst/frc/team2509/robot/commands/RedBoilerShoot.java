@@ -36,7 +36,7 @@ public class RedBoilerShoot extends Command {
 		GEARSINK = CameraServer.getInstance().getVideo("GEAR"),
 		SHOOTERSINK = CameraServer.getInstance().getVideo("SHOOTER");
 	private double
-	TARGETSPEED= 4000,
+	TARGETSPEED= 3800,
 	DISTANCE;
 	private final CvSource 
 		OUTPUT_STREAM = CameraServer.getInstance().putVideo("ALT-Cam", 640, 480);
@@ -152,7 +152,7 @@ public class RedBoilerShoot extends Command {
     	if(GYRO.getAngle()<(-45)) DT.drive(0, 0);
     	//Drive Forward @ 40% for 0.2 Seconds
     	DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
-    	Timer.delay(.3);
+    	Timer.delay(.25);
     	DT.drive(0, 0);
     	//Pause For 0.9 Seconds
     	Timer.delay(0.9);//This May Be Able To Be Shortened
@@ -178,7 +178,7 @@ public class RedBoilerShoot extends Command {
 	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
 	    			}
 	    			//If Target is In Goal move Forward
-	    			else if(GEARTARGET.x>=50&&GEARTARGET.x<=60){
+	    			else if(GEARTARGET.x>=52&&GEARTARGET.x<=62){
 	    				System.out.println("FORWARD");
 	    				DT.mecanumDrive_Cartesian(0, 0.3, 0, 0);	
 	    				Timer.delay(0.25);
@@ -195,8 +195,9 @@ public class RedBoilerShoot extends Command {
     			System.out.println("WAITING");
     		}*/
 
-	    	gearV.stop();
-    		Timer.delay(1.5);
+	    		Timer.delay(0.75);
+	    		gearV.stop();
+	    		Timer.delay(0.75);
     		boilerV.start();//Shooter Vision Thread
     		DT.mecanumDrive_Cartesian(0, -0.75, 0, 0);
     	    Timer.delay(0.75);
@@ -205,40 +206,42 @@ public class RedBoilerShoot extends Command {
     	    System.out.println("SHOOTER STARTING");
     	    while(GYRO.getAngle()<(-37)) DT.mecanumDrive_Cartesian(0, 0, 0.4, 0);
         	if(GYRO.getAngle()>(-37)) DT.drive(0, 0);
-    	    RobotMap.SHOOT_MOTOR.set(4100);
+    	    RobotMap.SHOOT_MOTOR.set(TARGETSPEED);
     	    Timer.delay(0.5);
-    	    while(SHOOTTARGET == null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15))Timer.delay(0.02);
-    	    if(SHOOTTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
-        		System.out.println("AIMING NOW");
-        		while(SHOOTTARGET.x<=90||SHOOTTARGET.x>=100&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
-        			if(SHOOTTARGET.x>98&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
-        				System.out.println("To The Right");
-        				DT.mecanumDrive_Cartesian(0, 0, 0.25, 0);
-        				System.out.println("To The Right");
-        				Timer.delay(0.1);
-        				DT.drive(0, 0);
-        			}else if(SHOOTTARGET.x<92&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
-        				System.out.println("To The Left");
-        				DT.mecanumDrive_Cartesian(0, 0, -0.25, 0);
-        				System.out.println("To The Left");
-        				Timer.delay(0.1);
-        				DT.drive(0, 0);
-        			}else{
-        				DT.drive(0, 0);
-        				System.out.println("Now Kick");
-        			}
-        		}
-        		 System.out.println(Timer.getMatchTime());
-         		RobotMap.GATE.set(0.6);
-         		System.out.println("GATE OPENING");
-         	    Timer.delay(0.125);
-         	    RobotMap.GATE.set(0);
-         	    RobotMap.SHOOT_MOTOR.set(TARGETSPEED);
-         	    System.out.println("AUGER STARTING");
-         	    RobotMap.SHOOT_KICKER.set(0.75);
-        	}else{
-        		System.out.println("NO TARGET");
-        	}
+//    	    while(SHOOTTARGET == null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15))Timer.delay(0.02);
+//    	    if(SHOOTTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+//        		System.out.println("AIMING NOW");
+//        		while(SHOOTTARGET.x<=90||SHOOTTARGET.x>=100&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+//        			if(SHOOTTARGET.x>98&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+//        				System.out.println("To The Right");
+//        				DT.mecanumDrive_Cartesian(0, 0, 0.25, 0);
+//        				System.out.println("To The Right");
+//        				Timer.delay(0.1);
+//        				DT.drive(0, 0);
+//        			}else if(SHOOTTARGET.x<92&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+//        				System.out.println("To The Left");
+//        				DT.mecanumDrive_Cartesian(0, 0, -0.25, 0);
+//        				System.out.println("To The Left");
+//        				Timer.delay(0.1);
+//        				DT.drive(0, 0);
+//        			}else{
+//        				DT.drive(0, 0);
+//        				System.out.println("Now Kick");
+//        			}
+//        		}
+        		 if((Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+         	    	System.out.println(Timer.getMatchTime());
+             		RobotMap.GATE.set(0.6);
+             		System.out.println("GATE OPENING");
+             	    Timer.delay(0.125);
+             	    RobotMap.GATE.set(0);
+             	    RobotMap.SHOOT_MOTOR.set(TARGETSPEED);
+             	    System.out.println("AUGER STARTING");
+             	    RobotMap.SHOOT_KICKER.set(1);
+         	    }else{
+         	    	end();
+         	    }
+        		 
     	   
     		
 		}else{
@@ -253,11 +256,13 @@ public class RedBoilerShoot extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-        if(Timer.getMatchTime()>0&&Timer.getMatchTime()<15){
-        	return false;
-        }else{
-        	return true;
-        }
+
+        return !(Timer.getMatchTime()>0&&Timer.getMatchTime()<15);
+//        if(Timer.getMatchTime()>0&&Timer.getMatchTime()<15){
+//        	return false;
+//        }else{
+//        	return true;
+//        }
     }
 
 	// Called once after isFinished returns true

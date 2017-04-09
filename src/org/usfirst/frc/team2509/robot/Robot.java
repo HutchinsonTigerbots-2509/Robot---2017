@@ -125,16 +125,22 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-        
 		
     }
 
     public void teleopInit() {
+
+       
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        if (autonomousCommand != null) autonomousCommand.isCanceled();
+        if (autonomousCommand != null){
+        	autonomousCommand.cancel();
+
+            if(autonomousCommand.isCanceled())System.out.println("Autonomous Ended");
+        }
+        
         if(isEnabled()&&isOperatorControl()) opDrive.start();
         isTeleop = true;
     }

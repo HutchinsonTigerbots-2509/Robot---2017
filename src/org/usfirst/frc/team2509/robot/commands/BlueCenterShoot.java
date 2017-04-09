@@ -236,14 +236,19 @@ public class BlueCenterShoot extends Command {
             	}else{
             		System.out.println("NO TARGET");
             	}
-        	    System.out.println(Timer.getMatchTime());
-        		RobotMap.GATE.set(0.3);
-        		System.out.println("GATE OPENING");
-        	    Timer.delay(0.125);
-        	    RobotMap.GATE.set(0);
-        	    RobotMap.SHOOT_MOTOR.set(TARGETSPEED);
-        	    System.out.println("AUGER STARTING");
-        	    RobotMap.SHOOT_KICKER.set(1);
+        	    if((Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+        	    	System.out.println(Timer.getMatchTime());
+            		RobotMap.GATE.set(0.6);
+            		System.out.println("GATE OPENING");
+            	    Timer.delay(0.125);
+            	    RobotMap.GATE.set(0);
+            	    RobotMap.SHOOT_MOTOR.set(TARGETSPEED);
+            	    System.out.println("AUGER STARTING");
+            	    RobotMap.SHOOT_KICKER.set(1);
+        	    }else{
+        	    	end();
+        	    }
+        	    
         		
     		}else{
     			System.out.println("NO GEAR TARGET");
@@ -259,11 +264,12 @@ public class BlueCenterShoot extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9){
-        	return false;
-        }else{
-        	return true;
-        }
+    	return !(Timer.getMatchTime()>0&&Timer.getMatchTime()<15);
+//        if(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9){
+//        	return false;
+//        }else{
+//        	return true;
+//        }
     }
 
     // Called once after isFinished returns true

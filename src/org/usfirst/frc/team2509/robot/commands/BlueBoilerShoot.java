@@ -36,7 +36,7 @@ public class BlueBoilerShoot extends Command {
 		GEARSINK = CameraServer.getInstance().getVideo("GEAR"),
 		SHOOTERSINK = CameraServer.getInstance().getVideo("SHOOTER");
 	private double
-	TARGETSPEED= 4000,
+	TARGETSPEED= 3800,
 	DISTANCE;
 	private final CvSource 
 		OUTPUT_STREAM = CameraServer.getInstance().putVideo("ALT-Cam", 640, 480);
@@ -154,27 +154,28 @@ public class BlueBoilerShoot extends Command {
     	//Pause For 0.9 Seconds
     	Timer.delay(0.9);//This May Be Able To Be Shortened
     	//If Robot see Target Continue
+    	while(GEARTARGET == null)Timer.delay(0.02);
     	if(GEARTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)){
 			System.out.println("FOUND TARGET");
 			//While Target is less than 55 and in AutoTime
 			while(/*SWITCH.get()==false&&*/GEARTARGET.width<37&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
 	    		  //SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
 	    	    	//If Target is Left of Goal move left
-	    			if(GEARTARGET.x<50){
+	    			if(GEARTARGET.x<52){
 	    				System.out.println("TO THE LEFT");
 	    				DT.mecanumDrive_Cartesian(0.35, 0, 0, 0);
 	    				Timer.delay(0.05);
 	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
 	    			}
 	    			//If Target is Right of Goal Move right
-	    			else if(GEARTARGET.x>60){
+	    			else if(GEARTARGET.x>62){
 	    				System.out.println("TO THE RIGHT");
 	    				DT.mecanumDrive_Cartesian(-0.35,0, 0, 0);
 	    				Timer.delay(0.05);
 	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
 	    			}
 	    			//If Target is In Goal move Forward
-	    			else if(GEARTARGET.x>=50&&GEARTARGET.x<=60){
+	    			else if(GEARTARGET.x>=52&&GEARTARGET.x<=62){
 	    				System.out.println("FORWARD");
 	    				DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);	
 	    				Timer.delay(0.25);
@@ -199,46 +200,48 @@ public class BlueBoilerShoot extends Command {
     	    System.out.println("SHOOTER STARTING");
     	    while(GYRO.getAngle()>(37)) DT.mecanumDrive_Cartesian(0, 0, -0.4, 0);
         	if(GYRO.getAngle()<(37)) DT.drive(0, 0);
-    	    RobotMap.SHOOT_MOTOR.set(TARGETSPEED);
-    	    Timer.delay(0.5);
-    	    while(SHOOTTARGET == null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15))Timer.delay(0.02);
-    	    if(SHOOTTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
-        		System.out.println("AIMING NOW");
-        		while(SHOOTTARGET.x<=90||SHOOTTARGET.x>=100&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
-        			if(SHOOTTARGET.x>98&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
-        				System.out.println("To The Right");
-        				DT.mecanumDrive_Cartesian(0, 0, 0.25, 0);
-        				System.out.println("To The Right");
-        				Timer.delay(0.1);
-        				DT.drive(0, 0);
-        			}else if(SHOOTTARGET.x<92&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
-        				System.out.println("To The Left");
-        				DT.mecanumDrive_Cartesian(0, 0, -0.25, 0);
-        				System.out.println("To The Left");
-        				Timer.delay(0.1);
-        				DT.drive(0, 0);
-        			}else{
-        				DT.drive(0, 0);
-        				System.out.println("Now Kick");
-        			}
-        		}
-        		 System.out.println(Timer.getMatchTime());
-         		RobotMap.GATE.set(0.3);
-         		System.out.println("GATE OPENING");
-         	    Timer.delay(0.125);
-         	    RobotMap.GATE.set(0);
-         	    RobotMap.SHOOT_MOTOR.set(TARGETSPEED);
-         	    System.out.println("AUGER STARTING");
-         	    RobotMap.SHOOT_KICKER.set(1);
-        	}else{
-        		System.out.println("NO TARGET");
-        	}
-    	   
-    		
-		}else{
-			System.out.println("NO TARGET");
-		}
-	}
+        	 RobotMap.SHOOT_MOTOR.set(TARGETSPEED);
+     	    Timer.delay(0.5);
+//     	    while(SHOOTTARGET == null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15))Timer.delay(0.02);
+//     	    if(SHOOTTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+//         		System.out.println("AIMING NOW");
+//         		while(SHOOTTARGET.x<=90||SHOOTTARGET.x>=100&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+//         			if(SHOOTTARGET.x>98&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+//         				System.out.println("To The Right");
+//         				DT.mecanumDrive_Cartesian(0, 0, 0.25, 0);
+//         				System.out.println("To The Right");
+//         				Timer.delay(0.1);
+//         				DT.drive(0, 0);
+//         			}else if(SHOOTTARGET.x<92&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+//         				System.out.println("To The Left");
+//         				DT.mecanumDrive_Cartesian(0, 0, -0.25, 0);
+//         				System.out.println("To The Left");
+//         				Timer.delay(0.1);
+//         				DT.drive(0, 0);
+//         			}else{
+//         				DT.drive(0, 0);
+//         				System.out.println("Now Kick");
+//         			}
+//         		}
+         		 if((Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+          	    	System.out.println(Timer.getMatchTime());
+              		RobotMap.GATE.set(0.6);
+              		System.out.println("GATE OPENING");
+              	    Timer.delay(0.125);
+              	    RobotMap.GATE.set(0);
+              	    RobotMap.SHOOT_MOTOR.set(TARGETSPEED);
+              	    System.out.println("AUGER STARTING");
+              	    RobotMap.SHOOT_KICKER.set(1);
+          	    }else{
+          	    	end();
+          	    }
+         		 
+     	   
+     		
+ 		}else{
+ 			System.out.println("NO TARGET");
+ 		}
+ 	}
     	
 	protected void execute() {
     	if(Robot.isTeleop) end();
@@ -247,11 +250,12 @@ public class BlueBoilerShoot extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-        if(Timer.getMatchTime()>0&&Timer.getMatchTime()<15){
-        	return false;
-        }else{
-        	return true;
-        }
+//        if(Timer.getMatchTime()>0&&Timer.getMatchTime()<15){
+//        	return false;
+//        }else{
+//        	return true;
+//        }
+		 return !(Timer.getMatchTime()>0&&Timer.getMatchTime()<15);
     }
 
 	// Called once after isFinished returns true
