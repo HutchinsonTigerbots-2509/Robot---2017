@@ -152,7 +152,7 @@ protected void initialize() {
 		gearV.start();
 		//Drive forward @ 50% for 1.05 seconds
 		DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
-		Timer.delay(1.0);
+		Timer.delay(1.15);
 		DT.drive(0,0);
 		Timer.delay(0.75);
 		//If Robot See Target Continue
@@ -160,33 +160,34 @@ protected void initialize() {
 		if(GEARTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
 			System.out.println("FOUND TARGET");
 			//While Target is less than 55 and in AutoTime
-			while(/*SWITCH.get()==false&&*/GEARTARGET.width<35&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+			while(/*SWITCH.get()==false&&*/GEARTARGET.width<26&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
 	    		  //SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
 	    	    	//If Target is Left of Goal move left
-	    			if(GEARTARGET.x<50){
+	    			if(GEARTARGET.x<60){
 	    				System.out.println("TO THE LEFT");
 	    				DT.mecanumDrive_Cartesian(0.35, 0, 0, 0);
-	    				Timer.delay(0.05);
+	    				Timer.delay(0.04);
 	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
 	    			}
 	    			//If Target is Right of Goal Move right
-	    			else if(GEARTARGET.x>60){
+	    			else if(GEARTARGET.x>70){
 	    				System.out.println("TO THE RIGHT");
 	    				DT.mecanumDrive_Cartesian(-0.35,0, 0, 0);
-	    				Timer.delay(0.05);
+	    				Timer.delay(0.04);
 	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
 	    			}
 	    			//If Target is In Goal move Forward
-	    			else if(GEARTARGET.x>=50&&GEARTARGET.x<=60){
+	    			else if(GEARTARGET.x>=60&&GEARTARGET.x<=70){
 	    				System.out.println("FORWARD");
-	    				DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);	
+	    				DT.mecanumDrive_Cartesian(0, 0.3, 0, 0);	
 	    				Timer.delay(0.25);
 	    				DT.mecanumDrive_Cartesian(0, 0.0, 0, 0);
 	    				Timer.delay(0.25);
 	    			}
 	    		}
+				
 	    		DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
-	    		Timer.delay(0.25);
+	    		Timer.delay(0.4);
 	    		DT.drive(0, 0);
     	/*	while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)){
     			Timer.delay(0.05);

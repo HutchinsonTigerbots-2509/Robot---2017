@@ -161,24 +161,24 @@ public class RedBoilerShoot extends Command {
     	if(GEARTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)){
 			System.out.println("FOUND TARGET");
 			//While Target is less than 55 and in AutoTime
-			while(/*SWITCH.get()==false&&*/GEARTARGET.width<37&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+			while(/*SWITCH.get()==false&&*/GEARTARGET.width<26&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
 	    		  //SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
 	    	    	//If Target is Left of Goal move left
-	    			if(GEARTARGET.x<52){
+	    			if(GEARTARGET.x<60){
 	    				System.out.println("TO THE LEFT");
-	    				DT.mecanumDrive_Cartesian(0.3, 0, 0, 0);
-	    				Timer.delay(0.05);
+	    				DT.mecanumDrive_Cartesian(0.35, 0, 0, 0);
+	    				Timer.delay(0.04);
 	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
 	    			}
 	    			//If Target is Right of Goal Move right
-	    			else if(GEARTARGET.x>62){
+	    			else if(GEARTARGET.x>70){
 	    				System.out.println("TO THE RIGHT");
-	    				DT.mecanumDrive_Cartesian(-0.3,0, 0, 0);
-	    				Timer.delay(0.05);
+	    				DT.mecanumDrive_Cartesian(-0.35,0, 0, 0);
+	    				Timer.delay(0.04);
 	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
 	    			}
 	    			//If Target is In Goal move Forward
-	    			else if(GEARTARGET.x>=52&&GEARTARGET.x<=62){
+	    			else if(GEARTARGET.x>=60&&GEARTARGET.x<=70){
 	    				System.out.println("FORWARD");
 	    				DT.mecanumDrive_Cartesian(0, 0.3, 0, 0);	
 	    				Timer.delay(0.25);
@@ -204,8 +204,8 @@ public class RedBoilerShoot extends Command {
     	    DT.mecanumDrive_Cartesian(0, 0, 0, 0);
     	    
     	    System.out.println("SHOOTER STARTING");
-    	    while(GYRO.getAngle()<(-37)) DT.mecanumDrive_Cartesian(0, 0, 0.4, 0);
-        	if(GYRO.getAngle()>(-37)) DT.drive(0, 0);
+    	    while(GYRO.getAngle()<(-30)) DT.mecanumDrive_Cartesian(0, 0, 0.4, 0);
+        	if(GYRO.getAngle()>(-30)) DT.drive(0, 0);
     	    RobotMap.SHOOT_MOTOR.set(TARGETSPEED);
     	    Timer.delay(0.5);
 //    	    while(SHOOTTARGET == null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15))Timer.delay(0.02);

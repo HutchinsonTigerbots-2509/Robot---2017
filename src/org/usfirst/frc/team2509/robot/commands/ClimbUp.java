@@ -23,12 +23,12 @@ public class ClimbUp extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	motor.set(1.0);
+    	altmotor.set(1.0);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	motor.set(1.0);
-    	altmotor.set(1.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()

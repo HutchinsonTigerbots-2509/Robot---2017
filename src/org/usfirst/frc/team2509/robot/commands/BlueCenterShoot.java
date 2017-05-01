@@ -162,48 +162,50 @@ public class BlueCenterShoot extends Command {
     		if(GEARTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
     			System.out.println("FOUND TARGET");
     			//While Target is less than 55 and in AutoTime
-    			while(/*SWITCH.get()==false&&*/GEARTARGET.width<35&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
+    			while(/*SWITCH.get()==false&&*/GEARTARGET.width<26&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.5)){
     	    		  //SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
     	    	    	//If Target is Left of Goal move left
-    	    			if(GEARTARGET.x<50){
+    	    			if(GEARTARGET.x<60){
     	    				System.out.println("TO THE LEFT");
     	    				DT.mecanumDrive_Cartesian(0.35, 0, 0, 0);
-    	    				Timer.delay(0.05);
+    	    				Timer.delay(0.04);
     	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
     	    			}
     	    			//If Target is Right of Goal Move right
-    	    			else if(GEARTARGET.x>60){
+    	    			else if(GEARTARGET.x>70){
     	    				System.out.println("TO THE RIGHT");
     	    				DT.mecanumDrive_Cartesian(-0.35,0, 0, 0);
-    	    				Timer.delay(0.05);
+    	    				Timer.delay(0.04);
     	    				DT.mecanumDrive_Cartesian(0, 0, 0, 0);
     	    			}
     	    			//If Target is In Goal move Forward
-    	    			else if(GEARTARGET.x>=50&&GEARTARGET.x<=60){
+    	    			else if(GEARTARGET.x>=60&&GEARTARGET.x<=70){
     	    				System.out.println("FORWARD");
-    	    				DT.mecanumDrive_Cartesian(0, 0.4, 0, 0);	
+    	    				DT.mecanumDrive_Cartesian(0, 0.3, 0, 0);	
     	    				Timer.delay(0.25);
     	    				DT.mecanumDrive_Cartesian(0, 0.0, 0, 0);
     	    				Timer.delay(0.25);
     	    			}
     	    		}
+    				
     	    		DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
-    	    		Timer.delay(0.25);
+    	    		Timer.delay(0.4);
     	    		DT.drive(0, 0);
+    	    		Timer.delay(0.75);
     	    		gearV.stop();
+    	    		Timer.delay(0.75);
         		/*while(SWITCH.get()==false&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)){
         			Timer.delay(0.05);
         			System.out.println("WAITING");
         		}*/
         		boilerV.start();
-        		Timer.delay(1.5);
         		DT.mecanumDrive_Cartesian(0, -0.75, 0, 0);
         	    Timer.delay(0.25);
         	    DT.drive(0, 0);
         	    System.out.println(Timer.getMatchTime());
-        	    while(GYRO.getAngle()<(50)&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)) 
+        	    while(GYRO.getAngle()<(47)&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)) 
         	    	DT.mecanumDrive_Cartesian(0, 0, 0.4, 0);
-            	if(GYRO.getAngle()>(50)) DT.drive(0, 0);
+            	if(GYRO.getAngle()>(47)) DT.drive(0, 0);
         	    DT.mecanumDrive_Cartesian(0, -0.75, 0, 0);
         	    Timer.delay(0.45);
         	    System.out.println(Timer.getMatchTime());
@@ -211,31 +213,31 @@ public class BlueCenterShoot extends Command {
         	    Timer.delay(0.45);
         	    DT.drive(0, 0);
         	    Timer.delay(0.5);
-        	    while(SHOOTTARGET == null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9))Timer.delay(0.02);
-        	    if(SHOOTTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)){
-            		System.out.println("AIMING NOW");
-            		while(SHOOTTARGET.x<=90||SHOOTTARGET.x>=100&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
-            			if(SHOOTTARGET.x>98&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
-            				System.out.println("To The Right");
-            				DT.mecanumDrive_Cartesian(0, 0, 0.25, 0);
-            				System.out.println("To The Right");
-            				Timer.delay(0.1);
-            				DT.drive(0, 0);
-            			}else if(SHOOTTARGET.x<92&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
-            				System.out.println("To The Left");
-            				DT.mecanumDrive_Cartesian(0, 0, -0.25, 0);
-            				System.out.println("To The Left");
-            				Timer.delay(0.1);
-            				DT.drive(0, 0);
-            			}else{
-            				DT.drive(0, 0);
-            				System.out.println("Now Kick");
-            			}
-            		}
-            		
-            	}else{
-            		System.out.println("NO TARGET");
-            	}
+//        	    while(SHOOTTARGET == null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9))Timer.delay(0.02);
+//        	    if(SHOOTTARGET != null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)){
+//            		System.out.println("AIMING NOW");
+//            		while(SHOOTTARGET.x<=90||SHOOTTARGET.x>=100&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+//            			if(SHOOTTARGET.x>98&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+//            				System.out.println("To The Right");
+//            				DT.mecanumDrive_Cartesian(0, 0, 0.25, 0);
+//            				System.out.println("To The Right");
+//            				Timer.delay(0.1);
+//            				DT.drive(0, 0);
+//            			}else if(SHOOTTARGET.x<92&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
+//            				System.out.println("To The Left");
+//            				DT.mecanumDrive_Cartesian(0, 0, -0.25, 0);
+//            				System.out.println("To The Left");
+//            				Timer.delay(0.1);
+//            				DT.drive(0, 0);
+//            			}else{
+//            				DT.drive(0, 0);
+//            				System.out.println("Now Kick");
+//            			}
+//            		}
+//            		
+//            	}else{
+//            		System.out.println("NO TARGET");
+//            	}
         	    if((Timer.getMatchTime()>0&&Timer.getMatchTime()<15)){
         	    	System.out.println(Timer.getMatchTime());
             		RobotMap.GATE.set(0.6);

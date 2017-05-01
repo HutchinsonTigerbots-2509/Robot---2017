@@ -18,6 +18,7 @@ import org.usfirst.frc.team2509.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -36,7 +37,7 @@ public class Robot extends IterativeRobot {
     	autonomousCommand,
     	climbUp,
     	dropGear,
-    	filterGearTarget,
+    	filterTarget,
     	sweepForward,
     	gyroTurn,
     	opDrive,
@@ -87,7 +88,7 @@ public class Robot extends IterativeRobot {
         blue1 = new Blue1();
         blue2 = new Blue2();
         blue3 = new Blue3();
-        Command FilterTarget = new FilterTarget();
+        filterTarget = new FilterTarget();
         sweepForward = new SweeperForward();
         new Thread(()->{
 			while(true){
@@ -97,7 +98,7 @@ public class Robot extends IterativeRobot {
 			}
 		}).start();
         System.out.println("Robot Ready");
-        FilterTarget.start();
+        filterTarget.start();
     }
 
     /**
@@ -113,7 +114,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
     	RobotMap.DT_GYRO.reset();
-    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
+    	//SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
     	autoCommand = oi.chooser.getSelected();
     	autonomousCommand = oi.getAutonomous(autoCommand);
         // schedule the autonomous command (example)
@@ -138,7 +139,10 @@ public class Robot extends IterativeRobot {
         if (autonomousCommand != null){
         	autonomousCommand.cancel();
 
-            if(autonomousCommand.isCanceled())System.out.println("Autonomous Ended");
+            if(autonomousCommand.isCanceled()){
+            	System.out.println("Autonomous Ended");
+            	filterTarget.cancel();
+            }
         }
         
         if(isEnabled()&&isOperatorControl()) opDrive.start();
@@ -149,9 +153,8 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	Timer.delay(0.005);
     	Scheduler.getInstance().run();
-        SmartDashboard.putNumber("GYRO ANGLE" , RobotMap.DT_GYRO.getAngle());
-    	SmartDashboard.putBoolean("Switch", RobotMap.GEAR_SWITCH.get());
         
     }
 
