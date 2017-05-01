@@ -46,7 +46,7 @@ public class BlueCenterShoot extends Command {
 		GEARSINK = CameraServer.getInstance().getVideo("GEAR"),
 		SHOOTERSINK = CameraServer.getInstance().getVideo("SHOOTER");
 	private double
-	TARGETSPEED= 4000,
+	TARGETSPEED= 4200,
 	DISTANCE;
 	private final CvSource 
 		OUTPUT_STREAM = CameraServer.getInstance().putVideo("ALT-Cam", 640, 480);
@@ -203,9 +203,9 @@ public class BlueCenterShoot extends Command {
         	    Timer.delay(0.25);
         	    DT.drive(0, 0);
         	    System.out.println(Timer.getMatchTime());
-        	    while(GYRO.getAngle()<(47)&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)) 
-        	    	DT.mecanumDrive_Cartesian(0, 0, 0.4, 0);
-            	if(GYRO.getAngle()>(47)) DT.drive(0, 0);
+        	    while(GYRO.getAngle()<(50)&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<14.9)) 
+        	    	DT.mecanumDrive_Cartesian(0, 0, 0.35, 0);
+            	if(GYRO.getAngle()>(50)) DT.drive(0, 0);
         	    DT.mecanumDrive_Cartesian(0, -0.75, 0, 0);
         	    Timer.delay(0.45);
         	    System.out.println(Timer.getMatchTime());

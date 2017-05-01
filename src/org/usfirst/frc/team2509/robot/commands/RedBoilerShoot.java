@@ -145,14 +145,14 @@ public class RedBoilerShoot extends Command {
 	    
 	    //Drive Forward @ 75% for 1.15 Seconds
 	    DT.mecanumDrive_Cartesian(0, 0.75, 0, 0);
-    	Timer.delay(1.15);
+    	Timer.delay(1.2);//1.15 Before 2.28
     	DT.drive(0, 0);
     	//Rotate the Robot untill GYRO reads -42 degrees
-    	while(GYRO.getAngle()>(-45)) DT.mecanumDrive_Cartesian(0, 0, -0.4, 0);
+    	while(GYRO.getAngle()>(-45)) DT.mecanumDrive_Cartesian(0, 0, -0.35, 0);
     	if(GYRO.getAngle()<(-45)) DT.drive(0, 0);
     	//Drive Forward @ 40% for 0.2 Seconds
     	DT.mecanumDrive_Cartesian(0, 0.5, 0, 0);
-    	Timer.delay(.25);
+    	Timer.delay(.3);
     	DT.drive(0, 0);
     	//Pause For 0.9 Seconds
     	Timer.delay(0.9);//This May Be Able To Be Shortened
@@ -198,14 +198,14 @@ public class RedBoilerShoot extends Command {
 	    		Timer.delay(0.75);
 	    		gearV.stop();
 	    		Timer.delay(0.75);
-    		boilerV.start();//Shooter Vision Thread
+    		//boilerV.start();//Shooter Vision Thread
     		DT.mecanumDrive_Cartesian(0, -0.75, 0, 0);
     	    Timer.delay(0.75);
     	    DT.mecanumDrive_Cartesian(0, 0, 0, 0);
     	    
     	    System.out.println("SHOOTER STARTING");
-    	    while(GYRO.getAngle()<(-30)) DT.mecanumDrive_Cartesian(0, 0, 0.4, 0);
-        	if(GYRO.getAngle()>(-30)) DT.drive(0, 0);
+    	    while(GYRO.getAngle()<(-37)) DT.mecanumDrive_Cartesian(0, 0, 0.4, 0);
+        	if(GYRO.getAngle()>(-37)) DT.drive(0, 0);
     	    RobotMap.SHOOT_MOTOR.set(TARGETSPEED);
     	    Timer.delay(0.5);
 //    	    while(SHOOTTARGET == null&&(Timer.getMatchTime()>0&&Timer.getMatchTime()<15))Timer.delay(0.02);

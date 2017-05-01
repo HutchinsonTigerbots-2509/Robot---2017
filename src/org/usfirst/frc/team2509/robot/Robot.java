@@ -98,7 +98,7 @@ public class Robot extends IterativeRobot {
 			}
 		}).start();
         System.out.println("Robot Ready");
-        filterTarget.start();
+        //filterTarget.start();
     }
 
     /**
@@ -139,10 +139,7 @@ public class Robot extends IterativeRobot {
         if (autonomousCommand != null){
         	autonomousCommand.cancel();
 
-            if(autonomousCommand.isCanceled()){
-            	System.out.println("Autonomous Ended");
-            	filterTarget.cancel();
-            }
+            if(autonomousCommand.isCanceled())System.out.println("Autonomous Ended");
         }
         
         if(isEnabled()&&isOperatorControl()) opDrive.start();

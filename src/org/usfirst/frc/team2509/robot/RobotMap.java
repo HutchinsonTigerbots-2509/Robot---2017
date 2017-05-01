@@ -27,7 +27,7 @@ public class RobotMap {
 	
     public static CANTalon CLIMB_MOTOR;
     public static CANTalon CLIMB_ALT;
-     public static CANTalon DT_LEFTFRONT;
+    public static CANTalon DT_LEFTFRONT;
     public static CANTalon DT_RIGHTFRONT;
     public static CANTalon DT_LEFTREAR;
     public static CANTalon DT_RIGHTREAR;
@@ -46,6 +46,7 @@ public class RobotMap {
     	CLIMB_MOTOR = new CANTalon(4);
     	CLIMB_MOTOR.setInverted(true);
     	LiveWindow.addActuator("Climb", "Motor 1", CLIMB_MOTOR);
+    	
         CLIMB_ALT = new CANTalon(7);
         CLIMB_ALT.setInverted(true);
         LiveWindow.addActuator("Climb", "Motor 2", CLIMB_ALT);

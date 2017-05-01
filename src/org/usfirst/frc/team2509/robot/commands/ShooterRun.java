@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * @author Nate
  */
 public class ShooterRun extends Command {
-	private double TARGETSPEED = 3800 ;
+	private double TARGETSPEED = 3800 ;//3800
 	private final CANTalon MOTOR = Robot.shooter.getShoot();
 	private final Talon KICKER = Robot.shooter.getKicker();
 	private final Talon GATE = RobotMap.GATE;
